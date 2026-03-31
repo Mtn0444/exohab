@@ -217,10 +217,18 @@ canvas { position: absolute; inset: 0; display: block; }
   z-index: 10;
 }
 .ss-inset.expanded .ss-note {
+  display: none;
+}
+.ss-inset.expanded .ss-expand-hint {
+  display: block;
   position: absolute;
   bottom: 1rem;
   left: 1.25rem;
   z-index: 10;
+  font-family: "Nunito", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
 }
 .ss-inset.expanded .ss-detail {
   position: absolute;
@@ -238,14 +246,8 @@ canvas { position: absolute; inset: 0; display: block; }
   height: auto;
 }
 .ss-expand-hint {
-  font-family: "Nunito", sans-serif;
-  font-size: 0.62rem;
-  color: rgba(255,255,255,0.3);
-  text-align: right;
-  margin-top: 0.35rem;
-  font-style: italic;
+  display: none;
 }
-.ss-inset.expanded .ss-expand-hint { display: none; }
 .ss-collapse-btn {
   display: none;
   position: absolute;
@@ -446,8 +448,8 @@ canvas { position: absolute; inset: 0; display: block; }
     <div class="ss-canvas-wrap">
       <canvas id="ssCanvas"></canvas>
     </div>
-    <div class="ss-note">Click a body to learn more</div>
-    <div class="ss-expand-hint">Click anywhere to expand</div>
+    <div class="ss-note">Click anywhere to expand</div>
+    <div class="ss-expand-hint">Click a body to learn more</div>
     <div class="ss-detail" id="ssDetail">
       <div class="ss-detail-name" id="ssDetailName"></div>
       <div class="ss-detail-text" id="ssDetailText"></div>
@@ -1000,6 +1002,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function collapseSS(e) {
     e.stopPropagation();
     ssInset.classList.remove('expanded');
+    // Close the SS detail panel when returning to main map
+    ssSelected = null;
+    document.getElementById('ssDetail').classList.remove('open');
     setTimeout(() => drawSS(), 50);
   }
 
