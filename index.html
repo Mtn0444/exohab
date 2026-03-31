@@ -157,15 +157,15 @@ canvas { position: absolute; inset: 0; display: block; }
 .tag-green { background: rgba(20,140,80,0.25); color: #86efac; }
 .tag-amber { background: rgba(180,100,20,0.2); color: #fcd34d; }
 .tag-grey { background: rgba(50,70,90,0.3); color: #94a3b8; }
-.hab-bar-wrap { margin-top: 0.9rem; }
-.hab-bar-label { font-family: 'Nunito', sans-serif; font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.28rem; display: flex; justify-content: space-between; }
-.bar-track { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+.hab-bar-wrap { margin-top: 1rem; margin-bottom: 0.25rem; }
+.hab-bar-label { font-family: 'Nunito', sans-serif; font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.4rem; display: flex; justify-content: space-between; }
+.bar-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 2px; }
 .panel-desc { margin-top: 1.1rem; font-size: 1rem; line-height: 1.75; color: #c8d5e4; }
 .panel-stats { margin-top: 1.1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.05); }
-.ps-label { font-family: 'Nunito', sans-serif; font-size: 0.58rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+.ps-label { font-family: 'Nunito', sans-serif; font-size: 0.58rem; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.07em; }
 .ps-val { font-family: 'Nunito', sans-serif; font-size: 0.78rem; color: var(--text); margin-top: 0.12rem; }
-.panel-light { margin-top: 0.9rem; font-style: italic; font-size: 0.9rem; color: var(--muted); padding: 0.55rem 0.8rem; border-left: 2px solid rgba(74,158,255,0.35); }
+.panel-light { margin-top: 0.9rem; font-style: italic; font-size: 0.9rem; color: #7a8fa8; padding: 0.55rem 0.8rem; border-left: 2px solid rgba(74,158,255,0.35); }
 .hab-note { margin-top: 0.7rem; font-size: 0.88rem; color: #7a8fa8; font-style: italic; line-height: 1.6; }
 .legend {
   position: absolute; bottom: 1.25rem; left: 1.25rem; z-index: 50;
@@ -235,11 +235,12 @@ canvas { position: absolute; inset: 0; display: block; }
   bottom: 1rem;
   left: 1.25rem;
   z-index: 10;
-  background: rgba(3,8,16,0.92);
-  border: 1px solid rgba(74,158,255,0.3);
+  background: rgba(3,8,16,0.95);
+  border: 1px solid rgba(74,158,255,0.4);
   border-radius: 6px;
-  padding: 0.75rem 1rem;
-  max-width: 340px;
+  padding: 0.65rem 0.85rem;
+  max-width: 260px;
+  min-width: 200px;
 }
 .ss-inset.expanded .ss-canvas-wrap {
   flex: 1;
@@ -295,34 +296,60 @@ canvas { position: absolute; inset: 0; display: block; }
 .ss-detail.open { display: block; }
 .ss-detail-name {
   font-family: 'Nunito', sans-serif;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
 }
 .ss-detail-text {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem;
-  line-height: 1.5;
-  color: rgba(255,255,255,0.6);
+  line-height: 1.55;
+  color: #c8d5e4;
 }
 .ss-detail-travel {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: rgba(255,255,255,0.5);
-  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.7);
+  margin-top: 0.35rem;
   font-style: italic;
-  padding-top: 0.5rem;
+  padding-top: 0.35rem;
   border-top: 1px solid rgba(255,255,255,0.07);
 }
 .ss-close {
   font-family: 'Nunito', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--accent);
   cursor: pointer;
-  margin-top: 0.35rem;
+  margin-top: 0.3rem;
   display: inline-block;
+}
+.ss-photo {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+  z-index: 10;
+  width: 260px;
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.ss-photo.open { display: flex; }
+.ss-photo img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(74,158,255,0.3);
+  background: rgba(3,8,16,0.9);
+}
+.ss-photo-credit {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.3);
+  font-style: italic;
+  text-align: right;
 }
 .ss-note {
   font-family: 'Nunito', sans-serif;
@@ -456,6 +483,11 @@ canvas { position: absolute; inset: 0; display: block; }
       <div class="ss-detail-travel" id="ssDetailTravel" style="display:none"></div>
       <span class="ss-close" id="ssClose">✕ close</span>
     </div>
+    <div class="ss-photo" id="ssPhoto">
+      <img id="ssPhotoImg" src="" alt="">
+      <div class="ss-photo-credit">Image: NASA / Wikimedia Commons</div>
+    </div>
+
   </div>
 </div>
 
@@ -902,12 +934,13 @@ function renderLegend() {
     ],
   };
   const titles = {hab:'Colour = Habitability', temp:'Colour = Temperature (max 60°C)', size:'Colour = Planet size', dist:'Colour = Distance'};
+  const projection_note = '<div style="margin-top:0.6rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.08);font-family:Nunito,sans-serif;font-size:0.68rem;color:rgba(255,255,255,0.55);font-style:italic;line-height:1.5">Planets are arranged by distance from Earth on a logarithmic (relative) scale — nearby worlds are spread further apart for clarity, distant ones cluster toward the edge. All exoplanet angles from Earth are therefore illustrative, not astronomical positions.</div>';
   const items = rows[colorMode].map(([col, lbl]) =>
     col
       ? '<div class="legend-row"><div class="ldot" style="background:' + col + '"></div><div class="llabel">' + lbl + '</div></div>'
-      : '<div class="legend-row" style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.08)"><div class="llabel" style="color:rgba(255,255,255,0.55);font-style:italic;font-size:0.72rem;line-height:1.45">' + lbl + '</div></div>'
+      : '<div class="legend-row" style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.08)"><div class="llabel" style="color:rgba(255,255,255,0.55);font-size:0.72rem;line-height:1.45">' + lbl + '</div></div>'
   ).join('');
-  leg.innerHTML = '<div class="legend-title">' + titles[colorMode] + '</div>' + items;
+  leg.innerHTML = '<div class="legend-title">' + titles[colorMode] + '</div>' + items + projection_note;
 }
 
 // --- Search ---
@@ -1002,9 +1035,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function collapseSS(e) {
     e.stopPropagation();
     ssInset.classList.remove('expanded');
-    // Close the SS detail panel when returning to main map
     ssSelected = null;
     document.getElementById('ssDetail').classList.remove('open');
+    document.getElementById('ssPhoto').classList.remove('open');
     setTimeout(() => drawSS(), 50);
   }
 
@@ -1034,18 +1067,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Solar System Inset ---
 const SS_BODIES = [
-  { name: "Sun",        dist: 0,    angle: 0,    color: "#fbbf24", r: 14, travel: "8 light-minutes from Earth — the light you see from the Sun right now left 8 minutes ago.", desc: "Our star contains 99.86% of all the mass in the solar system — everything else, every planet, moon, asteroid and comet, is the remaining 0.14%. At its core, temperatures reach 15 million°C, fusing hydrogen into helium and releasing the energy that warms every world in this guide. It has been burning for 4.6 billion years and has roughly another 5 billion to go. Every photon of sunlight hitting your skin left the Sun about 8 minutes ago — but was actually generated deep in the solar core up to 100,000 years before that, slowly working its way out through layer after layer of dense plasma." },
-  { name: "Venus",      dist: 0.18, angle: 2.2,  color: "#f97316", r: 7,  travel: "About 38 million km at closest approach — roughly 5 months by spacecraft. Mariner 2 made the first successful flyby in 1962.", desc: "Venus is almost exactly Earth's size and mass, yet it is one of the most hostile places in the solar system. A runaway greenhouse effect — likely triggered billions of years ago when its oceans evaporated — has created a surface pressure 90 times that of Earth and temperatures of 465°C, hot enough to melt lead. It rains sulphuric acid in the upper atmosphere. What makes Venus particularly sobering is that it sits within the Sun's habitable zone — proof that being the right distance from a star is nowhere near enough. Some scientists believe ancient Venus may have had liquid oceans and a mild climate for up to 2 billion years before tipping into catastrophe." },
-  { name: "Earth",      dist: 0.25, angle: 0,    color: "#4a9eff", r: 7,  travel: "You are here.", desc: "Home. The only world we know for certain harbours life — and the reference point from which every distance here is measured." },
-  { name: "Moon",       dist: 0.28, angle: 0.5,  color: "#c8d8e8", r: 4,  travel: "384,000 km away — about 3 days by spacecraft. Apollo 11 made the journey in 1969. Light takes just 1.3 seconds to cross it.", desc: "The only other world humans have walked on — twelve astronauts between 1969 and 1972 — and humanity's most likely first stepping stone for permanent settlement. Just three days away by spacecraft, it has confirmed water ice in permanently shadowed craters near the poles that could sustain a base. Surface temperatures are brutal: up to +127°C in direct sunlight and -173°C in shadow, sometimes within metres of each other, because the Moon has no atmosphere to spread or retain heat. Living there would mean staying underground or in pressurised habitats almost entirely. NASA's Artemis programme, SpaceX, and a growing number of space agencies and private companies worldwide are all targeting establishing a presence on the lunar surface this decade, with the Moon seen as the essential proving ground for the longer Mars journey." },
-  { name: "Mars",       dist: 0.35, angle: 5.0,  color: "#ef4444", r: 6,  travel: "Between 54 and 401 million km depending on orbital position — roughly 7 to 9 months by spacecraft. Light takes between 3 and 22 minutes.", desc: "Mars is the most realistic near-term destination for human settlement. Its day is just 24.6 hours — almost identical to ours — and it has polar ice caps of water and frozen CO₂, plus evidence of ancient rivers suggesting it was once warm and wet. Temperatures swing dramatically: up to +20°C on a warm equatorial afternoon, dropping below -100°C the same night, with a global average around -60°C. The atmosphere is 95% CO₂ and paper-thin, offering almost no radiation protection — any human presence would need underground habitats or heavy shielding. NASA's Curiosity rover currently records daily highs of around -1°C to -13°C and overnight lows reaching -100°C. The dust storms that periodically engulf the entire planet for months remain one of the biggest challenges for any future mission." },
-  { name: "Jupiter",    dist: 0.62, angle: 1.0,  color: "#c2915a", r: 11, travel: "About 600 million km at closest — around 6 years by spacecraft. The Voyager probes reached it in under 2 years using a faster trajectory. Light takes about 35 minutes.", desc: "Jupiter is so large that more than 1,300 Earths could fit inside it, and its gravitational influence shapes the entire solar system. It acts as a colossal shield, capturing or deflecting comets and asteroids that would otherwise threaten the inner planets — a role that may have been essential for life on Earth to develop over billions of years undisturbed. Its iconic Great Red Spot is a storm that has been raging for at least 350 years, wider than Earth itself. Jupiter has at least 95 known moons, several of which — Europa, Ganymede, and Callisto — have subsurface oceans that make them candidates for extraterrestrial life." },
-  { name: "Europa",     dist: 0.65, angle: 0.4,  color: "#7dd3fc", r: 5,  travel: "Roughly the same distance as Jupiter — about 6 years by current spacecraft. NASA's Europa Clipper launched in 2024 and will arrive around 2030.", desc: "Europa is covered by a smooth shell of ice up to 30km thick, beneath which lies a global ocean of liquid saltwater estimated to contain twice as much water as all of Earth's oceans combined. This ocean is kept liquid not by sunlight — Europa is far too cold for that — but by tidal heating: Jupiter's immense gravity constantly flexes the moon's interior, generating heat. The ocean floor likely has hydrothermal vents similar to those on Earth's deep ocean floor, where entire ecosystems thrive without sunlight. NASA's Europa Clipper spacecraft launched in October 2024 and will begin its detailed study of the moon around 2030, making it one of the most anticipated moments in the search for extraterrestrial life." },
-  { name: "Ganymede",   dist: 0.65, angle: 1.6,  color: "#6b8fa8", r: 6,  travel: "Similar distance to Jupiter — around 6 years by spacecraft. ESA's JUICE mission is en route and will arrive in 2034.", desc: "Ganymede is the largest moon in the solar system — bigger than the planet Mercury — and uniquely, it generates its own magnetic field, creating its own small magnetosphere within Jupiter's much larger one. Like Europa, it harbours a vast subsurface ocean, estimated to contain more liquid water than all of Earth's surface water combined, sandwiched between layers of ice deep below the surface. ESA's JUICE mission (Jupiter Icy Moons Explorer) is currently en route and will enter orbit around Ganymede in 2034, the first spacecraft ever to orbit a moon other than our own." },
-  { name: "Saturn",     dist: 0.78, angle: 3.8,  color: "#e8d5a3", r: 10, travel: "About 1.2 billion km — roughly 7 years by spacecraft. Cassini took 6 years and 9 months. Light takes about 70 minutes to arrive.", desc: "Saturn's rings are made of billions of chunks of ice and rock ranging from tiny grains to chunks the size of houses, spread across 282,000 km but averaging less than a kilometre thick — if scaled to the size of a sheet of paper, the rings would be thinner than the paper itself. Saturn is the least dense planet in the solar system — it would float on water if you could find an ocean large enough. With at least 146 known moons, Saturn has more confirmed moons than any other planet. Two of them, Titan and Enceladus, are among the most scientifically compelling destinations in the entire solar system for the search for life." },
-  { name: "Titan",      dist: 0.80, angle: 3.3,  color: "#f59e0b", r: 5,  travel: "Same distance as Saturn — about 7 years by spacecraft. NASA's Dragonfly drone mission launches in 2028 and will arrive in 2034.", desc: "Titan is the only moon in the solar system with a dense atmosphere — thicker than Earth's — and the only world beyond Earth known to have stable bodies of liquid on its surface. Those liquids are not water but liquid methane and ethane, forming lakes and seas near the poles and carving river channels across the surface. Surface temperatures average -179°C, and it rains methane. Despite the cold, Titan's chemistry is extraordinarily complex — it has organic molecules raining from the sky and accumulating on the surface over billions of years. NASA's Dragonfly mission, a nuclear-powered flying drone, launches in 2028 and will spend years hopping across Titan's surface analysing its chemistry for signs of prebiotic or even biological processes." },
-  { name: "Enceladus",  dist: 0.80, angle: 4.3,  color: "#e0f2fe", r: 4,  travel: "Same distance as Saturn — about 7 years by spacecraft. Cassini orbited Saturn for 13 years and made 23 close flybys of Enceladus.", desc: "Enceladus is only 500km across — small enough to fit inside the United Kingdom — yet it is one of the most exciting places in the solar system. Its south pole is covered in tiger stripe fractures from which enormous geysers continuously blast water vapour, ice particles, and organic molecules into space at 1,400 km/h, feeding Saturn's outer E ring. The Cassini spacecraft flew directly through these plumes and detected water, carbon dioxide, methane, molecular hydrogen, and complex organic compounds — essentially all the ingredients considered necessary for life as we know it. Beneath the ice lies a global ocean of liquid water kept warm by tidal heating, with hydrothermal activity on the seafloor. A future mission could potentially scoop up signs of life without even landing." },
-  { name: "Heliopause", dist: 0.95, angle: 3.14, color: "#8899aa", r: 5,  travel: "About 23 billion km — Voyager 1 took 35 years to get here travelling at 17 km per second. Light takes about 22 hours to cross it.", desc: "The heliopause marks where the Sun's solar wind — a constant stream of charged particles — finally loses the battle against the pressure of interstellar space and stops. Beyond it lies true interstellar space, filled with material from other stars and ancient supernovae. Voyager 1 crossed this boundary in August 2012, 35 years after launch and travelling at 17 km per second, becoming the first human-made object to enter interstellar space. It is now over 23 billion km from Earth — so far that its radio signals, travelling at the speed of light, take more than 22 hours to reach us. Voyager 1 is still transmitting data today, powered by a nuclear battery slowly fading after nearly five decades in space." }
+  { name: "Sun", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/sun.jpg",        dist: 0,    angle: 0,    color: "#fbbf24", r: 14, travel: "8 light-minutes from Earth — the light you see from the Sun right now left 8 minutes ago.", desc: "Our star contains 99.86% of all the mass in the solar system — everything else, every planet, moon, asteroid and comet, is the remaining 0.14%. At its core, temperatures reach 15 million°C, fusing hydrogen into helium and releasing the energy that warms every world in this guide. It has been burning for 4.6 billion years and has roughly another 5 billion to go. Every photon of sunlight hitting your skin left the Sun about 8 minutes ago — but was actually generated deep in the solar core up to 100,000 years before that, slowly working its way out through layer after layer of dense plasma." },
+  { name: "Venus", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/venus.jpg",      dist: 0.18, angle: 2.2,  color: "#f97316", r: 7,  travel: "About 38 million km at closest approach — roughly 5 months by spacecraft. Mariner 2 made the first successful flyby in 1962.", desc: "Venus is almost exactly Earth's size and mass, yet it is one of the most hostile places in the solar system. A runaway greenhouse effect — likely triggered billions of years ago when its oceans evaporated — has created a surface pressure 90 times that of Earth and temperatures of 465°C, hot enough to melt lead. It rains sulphuric acid in the upper atmosphere. What makes Venus particularly sobering is that it sits within the Sun's habitable zone — proof that being the right distance from a star is nowhere near enough. Some scientists believe ancient Venus may have had liquid oceans and a mild climate for up to 2 billion years before tipping into catastrophe." },
+  { name: "Earth", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/earth.jpg",      dist: 0.25, angle: 0,    color: "#4a9eff", r: 7,  travel: "You are here.", desc: "Home. The only world we know for certain harbours life — and the reference point from which every distance here is measured." },
+  { name: "Moon", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/moon.jpg",       dist: 0.28, angle: 0.5,  color: "#c8d8e8", r: 4,  travel: "384,000 km away — about 3 days by spacecraft. Apollo 11 made the journey in 1969. Light takes just 1.3 seconds to cross it.", desc: "The only other world humans have walked on — twelve astronauts between 1969 and 1972 — and humanity's most likely first stepping stone for permanent settlement. Just three days away by spacecraft, it has confirmed water ice in permanently shadowed craters near the poles that could sustain a base. Surface temperatures are brutal: up to +127°C in direct sunlight and -173°C in shadow, sometimes within metres of each other, because the Moon has no atmosphere to spread or retain heat. Living there would mean staying underground or in pressurised habitats almost entirely. NASA's Artemis programme, SpaceX, and a growing number of space agencies and private companies worldwide are all targeting establishing a presence on the lunar surface this decade, with the Moon seen as the essential proving ground for the longer Mars journey." },
+  { name: "Mars", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/mars.jpg",       dist: 0.35, angle: 5.0,  color: "#ef4444", r: 6,  travel: "Between 54 and 401 million km depending on orbital position — roughly 7 to 9 months by spacecraft. Light takes between 3 and 22 minutes.", desc: "Mars is the most realistic near-term destination for human settlement. Its day is just 24.6 hours — almost identical to ours — and it has polar ice caps of water and frozen CO₂, plus evidence of ancient rivers suggesting it was once warm and wet. Temperatures swing dramatically: up to +20°C on a warm equatorial afternoon, dropping below -100°C the same night, with a global average around -60°C. The atmosphere is 95% CO₂ and paper-thin, offering almost no radiation protection — any human presence would need underground habitats or heavy shielding. NASA's Curiosity rover currently records daily highs of around -1°C to -13°C and overnight lows reaching -100°C. The dust storms that periodically engulf the entire planet for months remain one of the biggest challenges for any future mission." },
+  { name: "Jupiter", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/jupiter.jpg",    dist: 0.62, angle: 1.0,  color: "#c2915a", r: 11, travel: "About 600 million km at closest — around 6 years by spacecraft. The Voyager probes reached it in under 2 years using a faster trajectory. Light takes about 35 minutes.", desc: "Jupiter is so large that more than 1,300 Earths could fit inside it, and its gravitational influence shapes the entire solar system. It acts as a colossal shield, capturing or deflecting comets and asteroids that would otherwise threaten the inner planets — a role that may have been essential for life on Earth to develop over billions of years undisturbed. Its iconic Great Red Spot is a storm that has been raging for at least 350 years, wider than Earth itself. Jupiter has at least 95 known moons, several of which — Europa, Ganymede, and Callisto — have subsurface oceans that make them candidates for extraterrestrial life." },
+  { name: "Europa", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/europa.jpg",     dist: 0.65, angle: 0.4,  color: "#7dd3fc", r: 5,  travel: "Roughly the same distance as Jupiter — about 6 years by current spacecraft. NASA's Europa Clipper launched in 2024 and will arrive around 2030.", desc: "Europa is covered by a smooth shell of ice up to 30km thick, beneath which lies a global ocean of liquid saltwater estimated to contain twice as much water as all of Earth's oceans combined. This ocean is kept liquid not by sunlight — Europa is far too cold for that — but by tidal heating: Jupiter's immense gravity constantly flexes the moon's interior, generating heat. The ocean floor likely has hydrothermal vents similar to those on Earth's deep ocean floor, where entire ecosystems thrive without sunlight. NASA's Europa Clipper spacecraft launched in October 2024 and will begin its detailed study of the moon around 2030, making it one of the most anticipated moments in the search for extraterrestrial life." },
+  { name: "Ganymede", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/ganymede.jpg",   dist: 0.65, angle: 1.6,  color: "#6b8fa8", r: 6,  travel: "Similar distance to Jupiter — around 6 years by spacecraft. ESA's JUICE mission is en route and will arrive in 2034.", desc: "Ganymede is the largest moon in the solar system — bigger than the planet Mercury — and uniquely, it generates its own magnetic field, creating its own small magnetosphere within Jupiter's much larger one. Like Europa, it harbours a vast subsurface ocean, estimated to contain more liquid water than all of Earth's surface water combined, sandwiched between layers of ice deep below the surface. ESA's JUICE mission (Jupiter Icy Moons Explorer) is currently en route and will enter orbit around Ganymede in 2034, the first spacecraft ever to orbit a moon other than our own." },
+  { name: "Saturn", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/saturn.jpg",     dist: 0.78, angle: 3.8,  color: "#e8d5a3", r: 10, travel: "About 1.2 billion km — roughly 7 years by spacecraft. Cassini took 6 years and 9 months. Light takes about 70 minutes to arrive.", desc: "Saturn's rings are made of billions of chunks of ice and rock ranging from tiny grains to chunks the size of houses, spread across 282,000 km but averaging less than a kilometre thick — if scaled to the size of a sheet of paper, the rings would be thinner than the paper itself. Saturn is the least dense planet in the solar system — it would float on water if you could find an ocean large enough. With at least 146 known moons, Saturn has more confirmed moons than any other planet. Two of them, Titan and Enceladus, are among the most scientifically compelling destinations in the entire solar system for the search for life." },
+  { name: "Titan", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/titan.jpg",      dist: 0.80, angle: 3.3,  color: "#f59e0b", r: 5,  travel: "Same distance as Saturn — about 7 years by spacecraft. NASA's Dragonfly drone mission launches in 2028 and will arrive in 2034.", desc: "Titan is the only moon in the solar system with a dense atmosphere — thicker than Earth's — and the only world beyond Earth known to have stable bodies of liquid on its surface. Those liquids are not water but liquid methane and ethane, forming lakes and seas near the poles and carving river channels across the surface. Surface temperatures average -179°C, and it rains methane. Despite the cold, Titan's chemistry is extraordinarily complex — it has organic molecules raining from the sky and accumulating on the surface over billions of years. NASA's Dragonfly mission, a nuclear-powered flying drone, launches in 2028 and will spend years hopping across Titan's surface analysing its chemistry for signs of prebiotic or even biological processes." },
+  { name: "Enceladus", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/enceladus.jpg",  dist: 0.80, angle: 4.3,  color: "#e0f2fe", r: 4,  travel: "Same distance as Saturn — about 7 years by spacecraft. Cassini orbited Saturn for 13 years and made 23 close flybys of Enceladus.", desc: "Enceladus is only 500km across — small enough to fit inside the United Kingdom — yet it is one of the most exciting places in the solar system. Its south pole is covered in tiger stripe fractures from which enormous geysers continuously blast water vapour, ice particles, and organic molecules into space at 1,400 km/h, feeding Saturn's outer E ring. The Cassini spacecraft flew directly through these plumes and detected water, carbon dioxide, methane, molecular hydrogen, and complex organic compounds — essentially all the ingredients considered necessary for life as we know it. Beneath the ice lies a global ocean of liquid water kept warm by tidal heating, with hydrothermal activity on the seafloor. A future mission could potentially scoop up signs of life without even landing." },
+  { name: "Heliopause", photo: "https://raw.githubusercontent.com/Mtn0444/exohab/main/images/pale_blue_dot.jpg", dist: 0.95, angle: 3.14, color: "#8899aa", r: 5,  travel: "About 23 billion km — Voyager 1 took 35 years to get here travelling at 17 km per second. Light takes about 22 hours to cross it.", desc: "The heliopause marks where the Sun's solar wind — a constant stream of charged particles — finally loses the battle against the pressure of interstellar space and stops. Beyond it lies true interstellar space, filled with material from other stars and ancient supernovae. Voyager 1 crossed this boundary in August 2012, 35 years after launch and travelling at 17 km per second, becoming the first human-made object to enter interstellar space. It is now over 23 billion km from Earth — so far that its radio signals, travelling at the speed of light, take more than 22 hours to reach us. Voyager 1 is still transmitting data today, powered by a nuclear battery slowly fading after nearly five decades in space." }
 ];
 
 let ssZoom = 1;
@@ -1243,10 +1276,21 @@ ssCanvas.addEventListener('mouseup', e => {
         travelEl.style.display = 'none';
       }
       document.getElementById('ssDetail').classList.add('open');
+      // Show photo on right side
+      const photoEl = document.getElementById('ssPhoto');
+      const photoImg = document.getElementById('ssPhotoImg');
+      if (b.photo) {
+        photoImg.src = b.photo;
+        photoImg.alt = b.name;
+        photoEl.classList.add('open');
+      } else {
+        photoEl.classList.remove('open');
+      }
     } else {
       // Clicked empty space — dismiss panel and deselect
       ssSelected = null;
       document.getElementById('ssDetail').classList.remove('open');
+      document.getElementById('ssPhoto').classList.remove('open');
     }
     drawSS();
   }
@@ -1299,6 +1343,7 @@ document.getElementById('ssClose').addEventListener('click', e => {
   e.stopPropagation();
   ssSelected = null;
   document.getElementById('ssDetail').classList.remove('open');
+  document.getElementById('ssPhoto').classList.remove('open');
   drawSS();
 });
 
@@ -1311,10 +1356,10 @@ drawSS();
 <div class="ly-overlay" id="lyOverlay"></div>
 <div class="ly-popup" id="lyPopup">
   <h2>✦ What is a light-year?</h2>
-  <p>A light-year is a distance — not a time. It's how far light travels in one full year.</p>
-  <p>Light moves so fast it circles the entire Earth <strong>seven times in a single second</strong>. In a year, travelling at that speed, it covers about 9.5 trillion kilometres.</p>
-  <p>Our nearest neighbouring star is 4 light-years away. That means the light reaching us from it tonight <strong>left before you started reading this</strong> — actually, it left over four years ago.</p>
-  <p>The planets in this guide range from a handful of light-years away to thousands. The further the planet, the further back in time the light you're "seeing" actually came from.</p>
+  <p>A light-year is a distance, not a time — it's how far light travels in one year.</p>
+  <p>Light is the fastest thing in the universe, so fast it circles the entire Earth <strong>7.5 times in a single second</strong>. The Sun is 8 light-minutes away — that means the sunlight you feel right now actually left the Sun 8 minutes ago.</p>
+  <p>In a year, travelling at that speed, light covers about 9.5 trillion kilometres. Even so, our nearest neighbouring star is over 4 light-years away. The light reaching us from it tonight left long before you started reading this — in fact, over four years ago.</p>
+  <p>The planets in this guide range from a handful of light-years away to thousands. The further the planet, the further back in time the light you're seeing actually came from.</p>
   <button class="ly-close" id="lyClose">Got it ✓</button>
 </div>
 </body>
