@@ -654,6 +654,9 @@ canvas { position: absolute; inset: 0; display: block; }
   /* Hide SS inset on mobile — accessible via drawer */
   .ss-inset { display: none !important; }
   .ss-inset.expanded { display: flex !important; flex-direction: column; }
+  .ss-inset.expanded .ss-title {
+    padding-right: 5rem;
+  }
 
   /* Light year popup mobile */
   .ly-popup {
@@ -732,7 +735,7 @@ canvas { position: absolute; inset: 0; display: block; }
     font-family: 'DM Sans', sans-serif;
     font-size: 0.8rem;
     line-height: 1.5;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.7);
     font-style: italic;
     margin-bottom: 1rem;
   }
@@ -745,7 +748,7 @@ canvas { position: absolute; inset: 0; display: block; }
   .ss-mobile-overlay .ss-mob-credit {
     font-family: 'Nunito', sans-serif;
     font-size: 0.7rem;
-    color: rgba(255,255,255,0.55);
+    color: rgba(255,255,255,0.7);
     font-style: italic;
     text-align: right;
     margin-top: 0.3rem;
