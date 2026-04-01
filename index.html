@@ -690,9 +690,23 @@ canvas { position: absolute; inset: 0; display: block; }
   .ss-inset.expanded.ss-detail-active .ss-expand-hint {
     display: none !important;
   }
+  .ss-inset.expanded.ss-detail-active .ss-title {
+    position: relative;
+    top: auto;
+    left: auto;
+    padding: 1rem 1rem 0.5rem;
+  }
+  .ss-inset.expanded.ss-detail-active .ss-collapse-btn {
+    position: fixed;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 310;
+  }
   .ss-inset.expanded.ss-detail-active {
-    overflow-y: auto;
+    display: block !important;
+    overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y !important;
   }
   .ss-inset.expanded .ss-detail {
     position: relative;
@@ -1642,6 +1656,7 @@ ssCanvas.addEventListener('wheel', e => {
 
 let ssTouchDist = null;
 ssCanvas.addEventListener('touchstart', e => {
+  if (document.getElementById('ssInset').classList.contains('ss-detail-active')) return;
   e.preventDefault(); e.stopPropagation();
   if (e.touches.length === 1) {
     ssMouseDown = true; ssMouseMoved = false;
@@ -1652,6 +1667,7 @@ ssCanvas.addEventListener('touchstart', e => {
 }, { passive: false });
 
 ssCanvas.addEventListener('touchmove', e => {
+  if (document.getElementById('ssInset').classList.contains('ss-detail-active')) return;
   e.preventDefault(); e.stopPropagation();
   if (e.touches.length === 1 && ssMouseDown) {
     const dx = e.touches[0].clientX - ssLastMouse.x, dy = e.touches[0].clientY - ssLastMouse.y;
