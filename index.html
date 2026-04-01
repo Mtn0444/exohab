@@ -605,7 +605,7 @@ canvas { position: absolute; inset: 0; display: block; }
   /* Detail panel — slide up drawer */
   .panel {
     width: 100% !important;
-    height: 65vh;
+    height: 55vh;
     top: auto;
     bottom: 0;
     right: 0;
@@ -615,8 +615,9 @@ canvas { position: absolute; inset: 0; display: block; }
     border-radius: 14px 14px 0 0;
     transform: translateY(100%);
     transition: transform 0.28s ease;
-    padding: 0.5rem 1rem 1rem;
+    padding: 0.5rem 0.85rem 0.85rem;
     overflow-y: auto;
+    font-size: 0.85rem;
   }
 
   .panel.open { transform: translateY(0); }
@@ -632,6 +633,15 @@ canvas { position: absolute; inset: 0; display: block; }
   }
 
   .panel-close { top: 0.5rem; right: 0.75rem; }
+  /* Smaller panel text on mobile */
+  .panel-name { font-size: 1rem !important; }
+  .panel-desc { font-size: 0.82rem !important; line-height: 1.55 !important; }
+  .ps-label { font-size: 0.55rem !important; }
+  .ps-val { font-size: 0.78rem !important; }
+  .panel-light { font-size: 0.78rem !important; }
+  .hab-note { font-size: 0.78rem !important; }
+  .hab-bar-label { font-size: 0.55rem !important; }
+
 
   /* Hide legend on mobile — info in drawer */
   .legend { display: none !important; }
@@ -686,10 +696,10 @@ canvas { position: absolute; inset: 0; display: block; }
 
 <!-- MOBILE FLOATING MODE BAR -->
 <div id="mobileModebar" style="display:none">
-  <button class="mob-mode-btn active" onclick="setMobileMode('hab')">Habitability</button>
-  <button class="mob-mode-btn" onclick="setMobileMode('temp')">Temp</button>
-  <button class="mob-mode-btn" onclick="setMobileMode('size')">Size</button>
-  <button class="mob-mode-btn" onclick="setMobileMode('dist')">Distance</button>
+  <button class="mob-mode-btn active" onclick="setMobileMode('hab',this)">Habitability</button>
+  <button class="mob-mode-btn" onclick="setMobileMode('temp',this)">Temp</button>
+  <button class="mob-mode-btn" onclick="setMobileMode('size',this)">Size</button>
+  <button class="mob-mode-btn" onclick="setMobileMode('dist',this)">Distance</button>
 </div>
 
 <div class="header">
@@ -1617,15 +1627,15 @@ function closeMobileDrawer() {
   document.getElementById('mobileOverlay').classList.remove('open');
 }
 
-function setMobileMode(mode) {
+function setMobileMode(mode, el) {
   colorMode = mode;
   document.querySelectorAll('.mob-mode-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  if (el) el.classList.add('active');
   // sync desktop buttons too
   document.querySelectorAll('.filter-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.mode === mode);
+    b.classList.toggle('active', b.dataset.color === mode);
   });
-  updateLegend();
+  renderLegend();
   draw();
 }
 
