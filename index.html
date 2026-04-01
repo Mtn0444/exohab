@@ -252,16 +252,19 @@ canvas { position: absolute; inset: 0; display: block; }
 .ss-collapse-btn {
   display: none;
   position: absolute;
-  top: 0.75rem;
-  right: 1rem;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 4px;
-  color: rgba(255,255,255,0.6);
+  top: 0.5rem;
+  right: 0.75rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 50%;
+  color: rgba(255,255,255,0.7);
   font-family: "Nunito", sans-serif;
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 700;
-  padding: 0.4rem 0.8rem;
+  width: 2rem;
+  height: 2rem;
+  line-height: 1;
+  padding: 0;
   cursor: pointer;
   transition: all 0.15s;
   z-index: 10;
@@ -834,7 +837,7 @@ canvas { position: absolute; inset: 0; display: block; }
   <div class="hint">Scroll to zoom · Drag to pan<br>Click any dot to explore</div>
 
   <div class="ss-inset" id="ssInset">
-    <button class="ss-collapse-btn" id="ssCollapse">✕ Close</button>
+    <button class="ss-collapse-btn" id="ssCollapse" onclick="event.stopPropagation();document.getElementById('ssInset').classList.remove('expanded');document.getElementById('ssInset').classList.remove('ss-detail-active');ssSelected=null;document.getElementById('ssDetail').classList.remove('open');document.getElementById('ssPhoto').classList.remove('open');setTimeout(function(){drawSS()},50)">✕</button>
     <div class="ss-title">☀ Our Solar System — Potentially Habitable Worlds</div>
     <div class="ss-canvas-wrap">
       <canvas id="ssCanvas"></canvas>
