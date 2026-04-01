@@ -683,6 +683,29 @@ canvas { position: absolute; inset: 0; display: block; }
     font-size: 0.82rem;
   }
 
+  /* Solar system detail + photo stacked on mobile */
+  .ss-inset.expanded .ss-detail {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    max-height: 30vh;
+    overflow-y: auto;
+  }
+  .ss-photo {
+    position: relative !important;
+    bottom: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .ss-photo img {
+    max-height: 30vh;
+    object-fit: contain;
+  }
+
   /* Search dropdown full width */
   .search-dropdown {
     width: 92vw !important;
