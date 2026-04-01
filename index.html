@@ -1330,6 +1330,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ssInset.addEventListener('click', expandSS);
   ssCollapse.addEventListener('click', collapseSS);
+  ssCollapse.addEventListener('touchend', e => { e.preventDefault(); collapseSS(e); });
 
   document.getElementById('ssBtn').addEventListener('click', () => {
     if (!ssInset.classList.contains('expanded')) {
@@ -1624,7 +1625,42 @@ ssCanvas.addEventListener('touchmove', e => {
   }
 }, { passive: false });
 
-ssCanvas.addEventListener('touchend', () => { ssMouseDown = false; ssMouseMoved = false; ssTouchDist = null; });
+ssCanvas.addEventListener('touchend', e => {
+  if (!ssMouseMoved && e.changedTouches.length === 1) {
+    const rect = ssCanvas.getBoundingClientRect();
+    const mx = e.changedTouches[0].clientX - rect.left;
+    const my = e.changedTouches[0].clientY - rect.top;
+    const b = ssBodyAt(mx, my);
+    if (b) {
+      ssSelected = b;
+      document.getElementById('ssDetailName').textContent = b.name;
+      document.getElementById('ssDetailText').textContent = b.desc;
+      const travelEl = document.getElementById('ssDetailTravel');
+      if (travelEl && b.travel && b.name !== 'Earth') {
+        travelEl.textContent = '\u{1F680} ' + b.travel;
+        travelEl.style.display = 'block';
+      } else if (travelEl) {
+        travelEl.style.display = 'none';
+      }
+      document.getElementById('ssDetail').classList.add('open');
+      const photoEl = document.getElementById('ssPhoto');
+      const photoImg = document.getElementById('ssPhotoImg');
+      if (b.photo) {
+        photoImg.src = b.photo;
+        photoImg.alt = b.name;
+        photoEl.classList.add('open');
+      } else {
+        photoEl.classList.remove('open');
+      }
+    } else {
+      ssSelected = null;
+      document.getElementById('ssDetail').classList.remove('open');
+      document.getElementById('ssPhoto').classList.remove('open');
+    }
+    drawSS();
+  }
+  ssMouseDown = false; ssMouseMoved = false; ssTouchDist = null;
+});
 
 document.getElementById('ssClose').addEventListener('click', e => {
   e.stopPropagation();
