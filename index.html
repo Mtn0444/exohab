@@ -683,56 +683,79 @@ canvas { position: absolute; inset: 0; display: block; }
     font-size: 0.82rem;
   }
 
-  /* Solar system: hide canvas when detail is open on mobile */
-  .ss-inset.expanded.ss-detail-active .ss-canvas-wrap {
-    display: none !important;
-  }
-  .ss-inset.expanded.ss-detail-active .ss-expand-hint {
-    display: none !important;
-  }
-  .ss-inset.expanded.ss-detail-active .ss-title {
-    position: relative;
-    top: auto;
-    left: auto;
-    padding: 1rem 1rem 0.5rem;
-  }
-  .ss-inset.expanded.ss-detail-active .ss-collapse-btn {
+  /* Solar system mobile detail overlay */
+  .ss-mobile-overlay {
+    display: none;
     position: fixed;
-    top: 0.5rem;
-    right: 0.5rem;
-    z-index: 310;
-  }
-  .ss-inset.expanded.ss-detail-active {
-    display: block !important;
-    overflow-y: auto !important;
+    inset: 0;
+    z-index: 350;
+    background: rgba(3,8,16,0.98);
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y !important;
-  }
-  .ss-inset.expanded .ss-detail {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    max-width: 100%;
-    width: 100%;
-    max-height: none;
+    touch-action: pan-y;
+    padding: 0.75rem 1rem 2rem;
     box-sizing: border-box;
-    padding: 1rem;
   }
-  .ss-inset.expanded .ss-detail .ss-detail-text {
-    max-height: none;
-    overflow: visible;
+  .ss-mobile-overlay.open {
+    display: block;
+  }
+  .ss-mobile-overlay .ss-mobile-close {
+    display: block;
+    margin-bottom: 0.75rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    color: rgba(255,255,255,0.6);
+    font-family: "Nunito", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+  }
+  .ss-mobile-overlay .ss-mob-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 0.6rem;
+  }
+  .ss-mobile-overlay .ss-mob-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #c8d5e4;
+    margin-bottom: 0.75rem;
+  }
+  .ss-mobile-overlay .ss-mob-travel {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  .ss-mobile-overlay .ss-mob-img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid rgba(74,158,255,0.3);
+    margin-bottom: 0.4rem;
+  }
+  .ss-mobile-overlay .ss-mob-credit {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.3);
+    font-style: italic;
+    text-align: right;
+  }
+
+  /* Hide desktop detail/photo on mobile */
+  .ss-inset.expanded .ss-detail {
+    display: none !important;
   }
   .ss-photo {
-    position: relative !important;
-    bottom: auto !important;
-    right: auto !important;
-    width: 100% !important;
-    box-sizing: border-box;
-    padding: 0 1rem 1rem;
-  }
-  .ss-photo img {
-    max-height: 50vh;
-    object-fit: contain;
+    display: none !important;
   }
 
   /* Search dropdown full width */
@@ -1690,31 +1713,29 @@ ssCanvas.addEventListener('touchend', e => {
     const b = ssBodyAt(mx, my);
     if (b) {
       ssSelected = b;
-      document.getElementById('ssDetailName').textContent = b.name;
-      document.getElementById('ssDetailText').textContent = b.desc;
-      const travelEl = document.getElementById('ssDetailTravel');
-      if (travelEl && b.travel && b.name !== 'Earth') {
-        travelEl.textContent = '\u{1F680} ' + b.travel;
-        travelEl.style.display = 'block';
-      } else if (travelEl) {
-        travelEl.style.display = 'none';
+      // Show mobile overlay
+      const overlay = document.getElementById('ssMobileOverlay');
+      if (overlay) {
+        document.getElementById('ssMobName').textContent = b.name;
+        document.getElementById('ssMobText').textContent = b.desc;
+        const travelEl = document.getElementById('ssMobTravel');
+        if (b.travel && b.name !== 'Earth') {
+          travelEl.textContent = '\u{1F680} ' + b.travel;
+          travelEl.style.display = 'block';
+        } else {
+          travelEl.style.display = 'none';
+        }
+        const img = document.getElementById('ssMobImg');
+        if (b.photo) {
+          img.src = b.photo;
+          img.alt = b.name;
+          img.style.display = 'block';
+        } else {
+          img.style.display = 'none';
+        }
+        overlay.classList.add('open');
+        overlay.scrollTop = 0;
       }
-      document.getElementById('ssDetail').classList.add('open');
-      document.getElementById('ssInset').classList.add('ss-detail-active');
-      const photoEl = document.getElementById('ssPhoto');
-      const photoImg = document.getElementById('ssPhotoImg');
-      if (b.photo) {
-        photoImg.src = b.photo;
-        photoImg.alt = b.name;
-        photoEl.classList.add('open');
-      } else {
-        photoEl.classList.remove('open');
-      }
-    } else {
-      ssSelected = null;
-      document.getElementById('ssDetail').classList.remove('open');
-      document.getElementById('ssPhoto').classList.remove('open');
-      document.getElementById('ssInset').classList.remove('ss-detail-active');
     }
     drawSS();
   }
@@ -1735,6 +1756,22 @@ document.getElementById('countBadge').textContent = '';
 renderLegend();
 resize();
 drawSS();
+
+// Mobile SS overlay close
+const ssMobileCloseBtn = document.getElementById('ssMobileClose');
+if (ssMobileCloseBtn) {
+  ssMobileCloseBtn.addEventListener('click', () => {
+    document.getElementById('ssMobileOverlay').classList.remove('open');
+    ssSelected = null;
+    drawSS();
+  });
+  ssMobileCloseBtn.addEventListener('touchend', e => {
+    e.preventDefault();
+    document.getElementById('ssMobileOverlay').classList.remove('open');
+    ssSelected = null;
+    drawSS();
+  });
+}
 
 // ===== MOBILE JS =====
 function openMobileDrawer() {
@@ -1792,6 +1829,14 @@ function openSS() {
 }
 
 </script>
+<div class="ss-mobile-overlay" id="ssMobileOverlay">
+  <button class="ss-mobile-close" id="ssMobileClose">✕ Back to Solar System</button>
+  <div class="ss-mob-name" id="ssMobName"></div>
+  <div class="ss-mob-travel" id="ssMobTravel"></div>
+  <div class="ss-mob-text" id="ssMobText"></div>
+  <img class="ss-mob-img" id="ssMobImg" src="" alt="">
+  <div class="ss-mob-credit">Image: NASA / Wikimedia Commons</div>
+</div>
 <div class="ly-overlay" id="lyOverlay"></div>
 <div class="ly-popup" id="lyPopup">
   <h2>✦ What is a light-year?</h2>
