@@ -254,20 +254,22 @@ canvas { position: absolute; inset: 0; display: block; }
   position: absolute;
   top: 0.5rem;
   right: 0.75rem;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
   border-radius: 50%;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.8);
   font-family: "Nunito", sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  width: 2rem;
-  height: 2rem;
+  width: 2.2rem;
+  height: 2.2rem;
   line-height: 1;
   padding: 0;
   cursor: pointer;
   transition: all 0.15s;
-  z-index: 10;
+  z-index: 100;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .ss-collapse-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
 .ss-inset.expanded .ss-collapse-btn { display: block; }
@@ -837,7 +839,7 @@ canvas { position: absolute; inset: 0; display: block; }
   <div class="hint">Scroll to zoom · Drag to pan<br>Click any dot to explore</div>
 
   <div class="ss-inset" id="ssInset">
-    <button class="ss-collapse-btn" id="ssCollapse" onclick="event.stopPropagation();document.getElementById('ssInset').classList.remove('expanded');document.getElementById('ssInset').classList.remove('ss-detail-active');ssSelected=null;document.getElementById('ssDetail').classList.remove('open');document.getElementById('ssPhoto').classList.remove('open');setTimeout(function(){drawSS()},50)">✕</button>
+    <button class="ss-collapse-btn" id="ssCollapse" ontouchstart="event.stopPropagation();event.preventDefault();closeSolarSystem()" onclick="event.stopPropagation();closeSolarSystem()">✕</button>
     <div class="ss-title">☀ Our Solar System — Potentially Habitable Worlds</div>
     <div class="ss-canvas-wrap">
       <canvas id="ssCanvas"></canvas>
@@ -1763,6 +1765,17 @@ document.getElementById('countBadge').textContent = '';
 renderLegend();
 resize();
 drawSS();
+
+// Close Solar System view
+function closeSolarSystem() {
+  document.getElementById('ssInset').classList.remove('expanded');
+  document.getElementById('ssInset').classList.remove('ss-detail-active');
+  ssSelected = null;
+  document.getElementById('ssDetail').classList.remove('open');
+  document.getElementById('ssPhoto').classList.remove('open');
+  document.getElementById('ssMobileOverlay').classList.remove('open');
+  setTimeout(function(){ drawSS(); }, 50);
+}
 
 // Mobile SS overlay close
 function closeSsMobileOverlay() {
