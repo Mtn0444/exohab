@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ExoHab</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23030810'/><circle cx='16' cy='16' r='1.5' fill='%234a9eff' opacity='0.9'/><circle cx='21' cy='10' r='2.5' fill='%2352b788' opacity='0.9'/><circle cx='24' cy='13' r='1.8' fill='%234a9eff' opacity='0.8'/><circle cx='25' cy='17' r='2' fill='%2352b788' opacity='0.85'/><circle cx='23' cy='21' r='1.5' fill='%234a9eff' opacity='0.7'/><circle cx='19' cy='24' r='2.2' fill='%234a9eff' opacity='0.8'/><circle cx='14' cy='25' r='1.8' fill='%2352b788' opacity='0.75'/><circle cx='9' cy='23' r='2' fill='%234a9eff' opacity='0.7'/><circle cx='6' cy='19' r='1.5' fill='%234a9eff' opacity='0.6'/><circle cx='6' cy='14' r='2.2' fill='%2352b788' opacity='0.8'/><circle cx='8' cy='9' r='1.8' fill='%234a9eff' opacity='0.75'/><circle cx='12' cy='6' r='2' fill='%234a9eff' opacity='0.7'/><circle cx='17' cy='6' r='1.5' fill='%2352b788' opacity='0.85'/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -437,6 +437,148 @@ canvas { position: absolute; inset: 0; display: block; }
 .sdi:last-child { border-bottom: none; }
 .sdi-name { font-family: 'Nunito', sans-serif; font-size: 0.78rem; color: #fff; }
 .sdi-meta { font-size: 0.82rem; color: var(--muted); margin-top: 0.08rem; }
+
+/* ===== MOBILE OPTIMISATION ===== */
+@media (max-width: 768px) {
+
+  /* Header — two rows */
+  .header {
+    flex-wrap: wrap;
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .header > div:first-child {
+    width: 100%;
+  }
+
+  .title { font-size: 1rem; }
+  .title-subtitle { font-size: 0.58rem; }
+
+  .header-right {
+    width: 100%;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  /* Filter buttons — shorter, bigger tap targets */
+  .filter-btn {
+    font-size: 0.65rem;
+    padding: 0.45rem 0.55rem;
+  }
+
+  /* Search box full width on mobile */
+  .search-box {
+    width: 100% !important;
+    font-size: 0.8rem;
+    padding: 0.45rem 0.75rem;
+  }
+
+  /* Light year and SS buttons smaller */
+  .ly-btn {
+    font-size: 0.65rem;
+    padding: 0.38rem 0.6rem;
+  }
+
+  /* Count badge hidden on mobile to save space */
+  .count-badge { display: none; }
+
+  /* Detail panel — slide up from bottom on mobile */
+  .panel {
+    width: 100% !important;
+    height: 60vh;
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    border-radius: 12px 12px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.28s ease;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+
+  .panel.open {
+    transform: translateY(0);
+  }
+
+  /* Panel close button repositioned */
+  .panel-close {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  /* Drag handle indicator on mobile panel */
+  .panel::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    margin: 0 auto 0.75rem;
+  }
+
+  /* Legend — smaller and repositioned */
+  .legend {
+    bottom: auto;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 175px;
+    max-width: 175px;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .legend-title { font-size: 0.6rem; }
+  .llabel { font-size: 0.65rem; }
+  .ldot { width: 8px; height: 8px; }
+
+  /* Hint text hidden on mobile */
+  .hint { display: none; }
+
+  /* Solar system inset — wider on mobile */
+  .ss-inset {
+    width: 240px;
+    bottom: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .ss-canvas-wrap { height: 180px; }
+
+  /* SS detail panel full width on mobile */
+  .ss-detail {
+    max-width: 85vw;
+    bottom: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .ss-photo {
+    display: none !important;
+  }
+
+  /* Light year popup full width on mobile */
+  .ly-popup {
+    width: 95vw;
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-btns {
+    gap: 0.25rem;
+  }
+
+  .filter-btn {
+    font-size: 0.6rem;
+    padding: 0.4rem 0.45rem;
+    letter-spacing: 0;
+  }
+
+  .title { font-size: 0.9rem; }
+}
 </style>
 </head>
 <body>
@@ -536,7 +678,9 @@ function toScreen(cx, cy) {
 // --- Planet visual properties ---
 function dotRadius(p) {
   const r = p.radius || 1.5;
-  return Math.max(2.5, Math.min(9, Math.sqrt(r) * 3.5));
+  const isMobile = window.innerWidth <= 768;
+  const base = Math.sqrt(r) * (isMobile ? 4.5 : 3.5);
+  return Math.max(isMobile ? 4 : 2.5, Math.min(isMobile ? 11 : 9, base));
 }
 
 function dotColor(p) {
