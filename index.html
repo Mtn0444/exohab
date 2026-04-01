@@ -744,10 +744,11 @@ canvas { position: absolute; inset: 0; display: block; }
   }
   .ss-mobile-overlay .ss-mob-credit {
     font-family: 'Nunito', sans-serif;
-    font-size: 0.6rem;
-    color: rgba(255,255,255,0.3);
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.55);
     font-style: italic;
     text-align: right;
+    margin-top: 0.3rem;
   }
 
   /* Hide desktop detail/photo on mobile */
@@ -1758,19 +1759,10 @@ resize();
 drawSS();
 
 // Mobile SS overlay close
-const ssMobileCloseBtn = document.getElementById('ssMobileClose');
-if (ssMobileCloseBtn) {
-  ssMobileCloseBtn.addEventListener('click', () => {
-    document.getElementById('ssMobileOverlay').classList.remove('open');
-    ssSelected = null;
-    drawSS();
-  });
-  ssMobileCloseBtn.addEventListener('touchend', e => {
-    e.preventDefault();
-    document.getElementById('ssMobileOverlay').classList.remove('open');
-    ssSelected = null;
-    drawSS();
-  });
+function closeSsMobileOverlay() {
+  document.getElementById('ssMobileOverlay').classList.remove('open');
+  ssSelected = null;
+  drawSS();
 }
 
 // ===== MOBILE JS =====
@@ -1830,10 +1822,10 @@ function openSS() {
 
 </script>
 <div class="ss-mobile-overlay" id="ssMobileOverlay">
-  <button class="ss-mobile-close" id="ssMobileClose">✕ Back to Solar System</button>
+  <button class="ss-mobile-close" onclick="closeSsMobileOverlay()">✕ Back to Solar System</button>
   <div class="ss-mob-name" id="ssMobName"></div>
-  <div class="ss-mob-travel" id="ssMobTravel"></div>
   <div class="ss-mob-text" id="ssMobText"></div>
+  <div class="ss-mob-travel" id="ssMobTravel"></div>
   <img class="ss-mob-img" id="ssMobImg" src="" alt="">
   <div class="ss-mob-credit">Image: NASA / Wikimedia Commons</div>
 </div>
