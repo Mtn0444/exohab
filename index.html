@@ -683,16 +683,30 @@ canvas { position: absolute; inset: 0; display: block; }
     font-size: 0.82rem;
   }
 
-  /* Solar system detail + photo stacked on mobile */
+  /* Solar system: hide canvas when detail is open on mobile */
+  .ss-inset.expanded.ss-detail-active .ss-canvas-wrap {
+    display: none !important;
+  }
+  .ss-inset.expanded.ss-detail-active .ss-expand-hint {
+    display: none !important;
+  }
+  .ss-inset.expanded.ss-detail-active {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   .ss-inset.expanded .ss-detail {
     position: relative;
     bottom: auto;
     left: auto;
     max-width: 100%;
     width: 100%;
+    max-height: none;
     box-sizing: border-box;
-    max-height: 30vh;
-    overflow-y: auto;
+    padding: 1rem;
+  }
+  .ss-inset.expanded .ss-detail .ss-detail-text {
+    max-height: none;
+    overflow: visible;
   }
   .ss-photo {
     position: relative !important;
@@ -700,9 +714,10 @@ canvas { position: absolute; inset: 0; display: block; }
     right: auto !important;
     width: 100% !important;
     box-sizing: border-box;
+    padding: 0 1rem 1rem;
   }
   .ss-photo img {
-    max-height: 30vh;
+    max-height: 50vh;
     object-fit: contain;
   }
 
@@ -1345,6 +1360,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function collapseSS(e) {
     e.stopPropagation();
     ssInset.classList.remove('expanded');
+    ssInset.classList.remove('ss-detail-active');
     ssSelected = null;
     document.getElementById('ssDetail').classList.remove('open');
     document.getElementById('ssPhoto').classList.remove('open');
@@ -1587,7 +1603,8 @@ ssCanvas.addEventListener('mouseup', e => {
         travelEl.style.display = 'none';
       }
       document.getElementById('ssDetail').classList.add('open');
-      // Show photo on right side
+      document.getElementById('ssInset').classList.add('ss-detail-active');
+      // Show photo below detail
       const photoEl = document.getElementById('ssPhoto');
       const photoImg = document.getElementById('ssPhotoImg');
       if (b.photo) {
@@ -1602,6 +1619,7 @@ ssCanvas.addEventListener('mouseup', e => {
       ssSelected = null;
       document.getElementById('ssDetail').classList.remove('open');
       document.getElementById('ssPhoto').classList.remove('open');
+      document.getElementById('ssInset').classList.remove('ss-detail-active');
     }
     drawSS();
   }
@@ -1666,6 +1684,7 @@ ssCanvas.addEventListener('touchend', e => {
         travelEl.style.display = 'none';
       }
       document.getElementById('ssDetail').classList.add('open');
+      document.getElementById('ssInset').classList.add('ss-detail-active');
       const photoEl = document.getElementById('ssPhoto');
       const photoImg = document.getElementById('ssPhotoImg');
       if (b.photo) {
@@ -1679,6 +1698,7 @@ ssCanvas.addEventListener('touchend', e => {
       ssSelected = null;
       document.getElementById('ssDetail').classList.remove('open');
       document.getElementById('ssPhoto').classList.remove('open');
+      document.getElementById('ssInset').classList.remove('ss-detail-active');
     }
     drawSS();
   }
@@ -1690,6 +1710,7 @@ document.getElementById('ssClose').addEventListener('click', e => {
   ssSelected = null;
   document.getElementById('ssDetail').classList.remove('open');
   document.getElementById('ssPhoto').classList.remove('open');
+  document.getElementById('ssInset').classList.remove('ss-detail-active');
   drawSS();
 });
 
