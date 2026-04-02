@@ -882,6 +882,11 @@ const PLANETS = [{"name": "Proxima Centauri b", "description": "Proxima Centauri
 let colorMode = 'hab';
 let zoom = 1;
 let pan = {x: 0, y: 0};
+function centerSwirl() {
+  const s = Math.min(canvas.width, canvas.height) * 0.44 * zoom;
+  pan.x = -0.001 * s;
+  pan.y = 0.064 * s;
+}
 let hovered = null;
 let selected = null;
 let highlight = null; // Set of names to highlight, or null for all
@@ -1060,11 +1065,13 @@ function draw() {
 
 // --- Hit test ---
 function planetAt(mx, my) {
-  let best = null, bestD = 16;
+  const isMobile = window.innerWidth <= 768;
+  const extra = isMobile ? 18 : 7;
+  let best = null, bestD = isMobile ? 30 : 16;
   for (const p of PLANETS) {
     const pos = toScreen(p.cx, p.cy);
     const d = Math.hypot(pos.x - mx, pos.y - my);
-    if (d < dotRadius(p) + 7 && d < bestD) {
+    if (d < dotRadius(p) + extra && d < bestD) {
       bestD = d;
       best = p;
     }
@@ -1765,6 +1772,8 @@ document.getElementById('ssClose').addEventListener('click', e => {
 document.getElementById('countBadge').textContent = '';
 renderLegend();
 resize();
+centerSwirl();
+draw();
 drawSS();
 
 // Close Solar System view
