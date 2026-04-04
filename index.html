@@ -1415,7 +1415,7 @@ function renderLegend() {
   ).join('');
   leg.innerHTML = '<div class="legend-title">' + titles[colorMode] + '</div>' + items + projection_note;
   const mobLeg = document.getElementById('mobileLegend');
-  if (mobLeg) mobLeg.innerHTML = '<div class="legend-title">' + titles[colorMode] + '</div>' + items;
+  if (mobLeg) mobLeg.innerHTML = '<div class="legend-title">' + titles[colorMode] + '</div>' + items + projection_note;
 }
 
 // --- Search ---
@@ -1900,6 +1900,8 @@ function openMobileDrawer() {
 function closeMobileDrawer() {
   document.getElementById('mobileDrawer').classList.remove('open');
   document.getElementById('mobileOverlay').classList.remove('open');
+  document.getElementById('mobileSearch').value = '';
+  document.getElementById('mobileSearchResults').innerHTML = '';
 }
 
 function setMobileMode(mode, el) {
@@ -1940,6 +1942,8 @@ function selectMobileResult(name) {
   if (!p) return;
   highlight = new Set([p.name]);
   openedViaSearch = true;
+  document.getElementById('mobileSearch').value = '';
+  document.getElementById('mobileSearchResults').innerHTML = '';
   closeMobileDrawer();
   openPanel(p);
   // Centre map on planet
