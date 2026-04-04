@@ -1304,6 +1304,7 @@ function closePanel() {
   if (wasOpen) panelJustClosed = Date.now();
   panelEl.classList.remove('open');
   document.getElementById('panelBackdrop').classList.remove('open');
+  hovered = null;
   const wasPlanet = selected;
   const wasSearch = openedViaSearch;
   selected = null;
