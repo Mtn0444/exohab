@@ -1869,7 +1869,7 @@ function handleMobileSearch(val) {
 function selectMobileResult(name) {
   const p = PLANETS.find(x => x.name === name);
   if (!p) return;
-  highlight = null;
+  highlight = new Set([p.name]);
   closeMobileDrawer();
   openPanel(p);
   // Centre map on planet
