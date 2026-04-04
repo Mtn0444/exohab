@@ -675,8 +675,25 @@ canvas { position: absolute; inset: 0; display: block; }
   .hab-bar-label { font-size: 0.7rem !important; color: rgba(255,255,255,0.65) !important; }
 
 
-  /* Hide legend on mobile — info in drawer */
+  /* Hide desktop legend on mobile */
   .legend { display: none !important; }
+
+  /* Mobile legend — fixed above mode bar, toggled by tapping mode buttons */
+  #mobileLegend {
+    display: none;
+    position: fixed;
+    bottom: 4.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85vw;
+    max-width: 320px;
+    background: rgba(3,8,16,0.96);
+    border: 1px solid rgba(74,158,255,0.35);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    z-index: 155;
+  }
+  #mobileLegend.open { display: block; }
 
   /* Hide hint */
   .hint { display: none; }
@@ -827,6 +844,7 @@ canvas { position: absolute; inset: 0; display: block; }
 </div>
 
 <!-- MOBILE FLOATING MODE BAR -->
+<div id="mobileLegend"></div>
 <div id="mobileModebar" style="display:none">
   <button class="mob-mode-btn active" onclick="setMobileMode('hab',this)">Habitability</button>
   <button class="mob-mode-btn" onclick="setMobileMode('temp',this)">Temp</button>
@@ -1396,6 +1414,8 @@ function renderLegend() {
       : '<div class="legend-row" style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.08)"><div class="llabel" style="color:rgba(255,255,255,0.55);font-size:0.72rem;line-height:1.45">' + lbl + '</div></div>'
   ).join('');
   leg.innerHTML = '<div class="legend-title">' + titles[colorMode] + '</div>' + items + projection_note;
+  const mobLeg = document.getElementById('mobileLegend');
+  if (mobLeg) mobLeg.innerHTML = '<div class="legend-title">' + titles[colorMode] + '</div>' + items;
 }
 
 // --- Search ---
@@ -1871,6 +1891,8 @@ function closeSsMobileOverlay() {
 }
 
 // ===== MOBILE JS =====
+document.getElementById('mobileDrawer').addEventListener('touchstart', e => { e.stopPropagation(); });
+document.getElementById('mobileDrawer').addEventListener('touchend', e => { e.stopPropagation(); });
 function openMobileDrawer() {
   document.getElementById('mobileDrawer').classList.add('open');
   document.getElementById('mobileOverlay').classList.add('open');
@@ -1890,6 +1912,11 @@ function setMobileMode(mode, el) {
   });
   renderLegend();
   draw();
+  // Toggle legend on mobile
+  if (window.innerWidth <= 768) {
+    const mobLeg = document.getElementById('mobileLegend');
+    mobLeg.classList.toggle('open');
+  }
 }
 
 function handleMobileSearch(val) {
