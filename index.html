@@ -1286,8 +1286,21 @@ function openPanel(p) {
 
 document.getElementById('panelClose').addEventListener('click', () => {
   document.getElementById('panel').classList.remove('open');
+  const wasPlanet = selected;
   selected = null;
-  draw();
+  // On mobile, keep the planet highlighted for 8 seconds after closing
+  if (window.innerWidth <= 768 && wasPlanet) {
+    highlight = new Set([wasPlanet.name]);
+    draw();
+    setTimeout(() => {
+      if (highlight && highlight.has(wasPlanet.name)) {
+        highlight = null;
+        draw();
+      }
+    }, 8000);
+  } else {
+    draw();
+  }
 });
 
 // --- Colour mode buttons ---
@@ -1839,8 +1852,15 @@ function setMobileMode(mode, el) {
 
 function handleMobileSearch(val) {
   const results = document.getElementById('mobileSearchResults');
-  if (!val || val.length < 2) { results.innerHTML = ''; return; }
+  if (!val || val.length < 2) {
+    results.innerHTML = '';
+    highlight = null;
+    draw();
+    return;
+  }
   const matches = PLANETS.filter(p => p.name.toLowerCase().includes(val.toLowerCase())).slice(0, 6);
+  highlight = matches.length ? new Set(matches.map(p => p.name)) : null;
+  draw();
   results.innerHTML = matches.map(p =>
     `<div onclick="selectMobileResult('${p.name}')" style="padding:0.5rem 0.75rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--text);border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer">${p.name}</div>`
   ).join('');
@@ -1849,6 +1869,7 @@ function handleMobileSearch(val) {
 function selectMobileResult(name) {
   const p = PLANETS.find(x => x.name === name);
   if (!p) return;
+  highlight = null;
   closeMobileDrawer();
   openPanel(p);
   // Centre map on planet
