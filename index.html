@@ -1636,7 +1636,7 @@ function drawSS() {
     const sr = d * scale;
     ctx.beginPath();
     ctx.arc(cx, cy, sr, 0, Math.PI*2);
-    ctx.strokeStyle = dashed ? 'rgba(255,255,255,0.55)' : 'rgba(120,185,255,0.6)';
+    ctx.strokeStyle = dashed ? 'rgba(255,255,255,0.7)' : 'rgba(120,185,255,0.6)';
     ctx.lineWidth = dashed ? 1.5 : 1.2;
     ctx.setLineDash(dashed ? [4,5] : []);
     ctx.stroke();
@@ -1653,7 +1653,7 @@ function drawSS() {
       ctx.beginPath();
       ctx.roundRect(lx - tw/2 - 5, ly - 9, tw + 10, 16, 3);
       ctx.fill();
-      ctx.fillStyle = dashed ? 'rgba(255,255,255,0.55)' : 'rgba(150,200,255,0.9)';
+      ctx.fillStyle = dashed ? 'rgba(255,255,255,0.75)' : 'rgba(150,200,255,0.9)';
       ctx.textAlign = 'center';
       ctx.fillText(label, lx, ly + 2);
       ctx.restore();
