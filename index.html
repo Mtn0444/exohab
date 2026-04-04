@@ -1411,7 +1411,7 @@ function renderLegend() {
   const items = rows[colorMode].map(([col, lbl]) =>
     col
       ? '<div class="legend-row"><div class="ldot" style="background:' + col + '"></div><div class="llabel">' + lbl + '</div></div>'
-      : '<div class="legend-row" style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.08)"><div class="llabel" style="color:rgba(255,255,255,0.55);font-size:0.72rem;line-height:1.45">' + lbl + '</div></div>'
+      : '<div class="legend-row" style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.08)"><div class="llabel" style="color:rgba(255,255,255,0.7);font-size:0.8rem;line-height:1.45">' + lbl + '</div></div>'
   ).join('');
   leg.innerHTML = '<div class="legend-title">' + titles[colorMode] + '</div>' + items + projection_note;
   const mobLeg = document.getElementById('mobileLegend');
