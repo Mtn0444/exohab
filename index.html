@@ -1840,21 +1840,21 @@ function setMobileMode(mode, el) {
 function handleMobileSearch(val) {
   const results = document.getElementById('mobileSearchResults');
   if (!val || val.length < 2) { results.innerHTML = ''; return; }
-  const matches = planets.filter(p => p.pl_name.toLowerCase().includes(val.toLowerCase())).slice(0, 6);
+  const matches = PLANETS.filter(p => p.name.toLowerCase().includes(val.toLowerCase())).slice(0, 6);
   results.innerHTML = matches.map(p =>
-    `<div onclick="selectMobileResult('${p.pl_name}')" style="padding:0.5rem 0.75rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--text);border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer">${p.pl_name}</div>`
+    `<div onclick="selectMobileResult('${p.name}')" style="padding:0.5rem 0.75rem;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--text);border-bottom:1px solid rgba(255,255,255,0.06);cursor:pointer">${p.name}</div>`
   ).join('');
 }
 
 function selectMobileResult(name) {
-  const p = planets.find(x => x.pl_name === name);
+  const p = PLANETS.find(x => x.name === name);
   if (!p) return;
   closeMobileDrawer();
-  showPanel(p);
+  openPanel(p);
   // Centre map on planet
-  const c = toCanvas(p._x, p._y);
-  panX += canvas.width/2 - c.x;
-  panY += canvas.height/2 - c.y;
+  const c = toScreen(p.cx, p.cy);
+  pan.x += canvas.width/2 - c.x;
+  pan.y += canvas.height/2 - c.y;
   draw();
 }
 
