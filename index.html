@@ -1297,8 +1297,10 @@ let mobileHighlightTimer = null;
 let openedViaSearch = false;
 let panelJustClosed = 0;
 function closePanel() {
-  panelJustClosed = Date.now();
-  document.getElementById('panel').classList.remove('open');
+  const panelEl = document.getElementById('panel');
+  const wasOpen = panelEl.classList.contains('open');
+  if (wasOpen) panelJustClosed = Date.now();
+  panelEl.classList.remove('open');
   document.getElementById('panelBackdrop').classList.remove('open');
   const wasPlanet = selected;
   const wasSearch = openedViaSearch;
