@@ -1212,6 +1212,7 @@ wrap.addEventListener('touchmove', e => {
     lastMouse = {x: e.touches[0].clientX, y: e.touches[0].clientY};
     draw();
   } else if (e.touches.length === 2 && t1Dist) {
+    mouseMoved = true;
     const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
     zoom = Math.max(0.25, Math.min(25, zoom * d / t1Dist));
     t1Dist = d;
