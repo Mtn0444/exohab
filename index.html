@@ -693,7 +693,7 @@ canvas { position: absolute; inset: 0; display: block; }
     padding: 0.75rem 1rem;
     z-index: 155;
   }
-  #mobileLegend.open { display: block; }
+  #mobileLegend.open { display: block !important; }
 
   /* Hide hint */
   .hint { display: none; }
@@ -1052,7 +1052,7 @@ function draw() {
   ctx.beginPath();
   ctx.arc(c.x, c.y, 5, 0, Math.PI * 2);
   const earthCol = (colorMode === 'hab' || colorMode === 'dist') ? '#a7f3d0'
-    : colorMode === 'temp' ? '#52b788'   // ~15°C temperate
+    : colorMode === 'temp' ? '#48bcc2'   // ~15°C blue-teal
     : '#4a9eff';                          // 1× Earth size
   ctx.fillStyle = earthCol;
   ctx.fill();
