@@ -1158,6 +1158,8 @@ wrap.addEventListener('mousedown', e => {
 });
 
 window.addEventListener('mousemove', e => {
+  if (document.getElementById('mobileDrawer').classList.contains('open')) return;
+  if (Date.now() - searchJustSelected < 600) return;
   const r = wrap.getBoundingClientRect();
   const mx = e.clientX - r.left;
   const my = e.clientY - r.top;
@@ -1203,6 +1205,8 @@ window.addEventListener('mousemove', e => {
 });
 
 window.addEventListener('mouseup', e => {
+  if (document.getElementById('mobileDrawer').classList.contains('open')) return;
+  if (Date.now() - searchJustSelected < 600) return;
   if (!mouseMoved) {
     // It was a click
     const r = wrap.getBoundingClientRect();
