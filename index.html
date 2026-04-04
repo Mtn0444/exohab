@@ -635,6 +635,13 @@ canvas { position: absolute; inset: 0; display: block; }
     z-index: 160;
   }
 
+  .panel-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 159;
+  }
+  .panel-backdrop.open { display: block; }
   .panel.open { transform: translateY(0); }
 
   .panel::before {
@@ -876,6 +883,7 @@ canvas { position: absolute; inset: 0; display: block; }
   </div>
 </div>
 
+<div class="panel-backdrop" id="panelBackdrop"></div>
 <div class="panel" id="panel">
   <button class="panel-close" id="panelClose" ontouchstart="event.preventDefault();closePanel()">✕ close</button>
   <div class="panel-name" id="pName"></div>
@@ -1281,6 +1289,7 @@ function openPanel(p) {
   document.getElementById('pNote').textContent = habNote(p.temp);
 
   document.getElementById('panel').classList.add('open');
+  if (window.innerWidth <= 768) document.getElementById('panelBackdrop').classList.add('open');
   draw();
 }
 
@@ -1290,6 +1299,7 @@ let panelJustClosed = 0;
 function closePanel() {
   panelJustClosed = Date.now();
   document.getElementById('panel').classList.remove('open');
+  document.getElementById('panelBackdrop').classList.remove('open');
   const wasPlanet = selected;
   const wasSearch = openedViaSearch;
   selected = null;
@@ -1310,6 +1320,7 @@ function closePanel() {
   }
 }
 document.getElementById('panelClose').addEventListener('click', closePanel);
+document.getElementById('panelBackdrop').addEventListener('touchstart', e => { e.preventDefault(); closePanel(); });
 
 // --- Colour mode buttons ---
 document.querySelectorAll('.filter-btn').forEach(btn => {
