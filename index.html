@@ -1242,6 +1242,7 @@ wrap.addEventListener('wheel', e => {
 // Touch
 let t1Dist = null;
 wrap.addEventListener('touchstart', e => {
+  if (document.getElementById('mobileDrawer').classList.contains('open')) return;
   e.preventDefault();
   if (e.touches.length === 1) {
     mouseDown = true; mouseMoved = false;
@@ -1270,6 +1271,7 @@ wrap.addEventListener('touchmove', e => {
 }, {passive: false});
 
 wrap.addEventListener('touchend', e => {
+  if (document.getElementById('mobileDrawer').classList.contains('open')) return;
   if (!mouseMoved && e.changedTouches.length === 1 && Date.now() - panelJustClosed > 600 && Date.now() - searchJustSelected > 600) {
     const r = wrap.getBoundingClientRect();
     const mx = e.changedTouches[0].clientX - r.left;
