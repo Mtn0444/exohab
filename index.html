@@ -1221,7 +1221,7 @@ wrap.addEventListener('touchmove', e => {
 }, {passive: false});
 
 wrap.addEventListener('touchend', e => {
-  if (!mouseMoved && e.changedTouches.length === 1) {
+  if (!mouseMoved && e.changedTouches.length === 1 && Date.now() - panelJustClosed > 400) {
     const r = wrap.getBoundingClientRect();
     const mx = e.changedTouches[0].clientX - r.left;
     const my = e.changedTouches[0].clientY - r.top;
@@ -1286,7 +1286,9 @@ function openPanel(p) {
 
 let mobileHighlightTimer = null;
 let openedViaSearch = false;
+let panelJustClosed = 0;
 function closePanel() {
+  panelJustClosed = Date.now();
   document.getElementById('panel').classList.remove('open');
   const wasPlanet = selected;
   const wasSearch = openedViaSearch;
