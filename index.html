@@ -1270,7 +1270,7 @@ wrap.addEventListener('touchmove', e => {
 }, {passive: false});
 
 wrap.addEventListener('touchend', e => {
-  if (!mouseMoved && e.changedTouches.length === 1 && Date.now() - panelJustClosed > 600) {
+  if (!mouseMoved && e.changedTouches.length === 1 && Date.now() - panelJustClosed > 600 && Date.now() - searchJustSelected > 600) {
     const r = wrap.getBoundingClientRect();
     const mx = e.changedTouches[0].clientX - r.left;
     const my = e.changedTouches[0].clientY - r.top;
@@ -1337,6 +1337,7 @@ function openPanel(p) {
 let mobileHighlightTimer = null;
 let openedViaSearch = false;
 let panelJustClosed = 0;
+let searchJustSelected = 0;
 function closePanel() {
   const panelEl = document.getElementById('panel');
   const wasOpen = panelEl.classList.contains('open');
@@ -1948,6 +1949,7 @@ function selectMobileResult(name) {
   if (!p) return;
   highlight = new Set([p.name]);
   openedViaSearch = true;
+  searchJustSelected = Date.now();
   document.getElementById('mobileSearch').value = '';
   document.getElementById('mobileSearchResults').innerHTML = '';
   closeMobileDrawer();
