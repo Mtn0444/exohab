@@ -1083,8 +1083,8 @@ function draw() {
 
     ctx.restore();
 
-    // Hover label
-    if (isHovered) {
+    // Hover label (desktop only — no persistent hover on touch devices)
+    if (isHovered && !('ontouchstart' in window)) {
       ctx.save();
       ctx.fillStyle = 'rgba(255,255,255,0.9)';
       ctx.font = '10px Nunito, sans-serif';
