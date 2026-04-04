@@ -1285,20 +1285,23 @@ function openPanel(p) {
 }
 
 let mobileHighlightTimer = null;
+let openedViaSearch = false;
 function closePanel() {
   document.getElementById('panel').classList.remove('open');
   const wasPlanet = selected;
+  const wasSearch = openedViaSearch;
   selected = null;
+  openedViaSearch = false;
   if (mobileHighlightTimer) { clearTimeout(mobileHighlightTimer); mobileHighlightTimer = null; }
-  // On mobile, keep the planet highlighted for 10 seconds after closing
-  if (window.innerWidth <= 768 && wasPlanet) {
+  // On mobile, keep the planet highlighted for 6 seconds after closing — only if opened via search
+  if (window.innerWidth <= 768 && wasPlanet && wasSearch) {
     highlight = new Set([wasPlanet.name]);
     draw();
     mobileHighlightTimer = setTimeout(() => {
       highlight = null;
       mobileHighlightTimer = null;
       draw();
-    }, 10000);
+    }, 6000);
   } else {
     highlight = null;
     draw();
@@ -1873,6 +1876,7 @@ function selectMobileResult(name) {
   const p = PLANETS.find(x => x.name === name);
   if (!p) return;
   highlight = new Set([p.name]);
+  openedViaSearch = true;
   closeMobileDrawer();
   openPanel(p);
   // Centre map on planet
