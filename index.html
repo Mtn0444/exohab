@@ -877,7 +877,7 @@ canvas { position: absolute; inset: 0; display: block; }
 </div>
 
 <div class="panel" id="panel">
-  <button class="panel-close" id="panelClose">✕ close</button>
+  <button class="panel-close" id="panelClose" ontouchstart="event.preventDefault();closePanel()">✕ close</button>
   <div class="panel-name" id="pName"></div>
   <div class="panel-tags" id="pTags"></div>
   <div class="hab-bar-wrap">
@@ -1166,9 +1166,7 @@ window.addEventListener('mouseup', e => {
         openPanel(p);
       } else {
         // Clicked empty space — close panel
-        document.getElementById('panel').classList.remove('open');
-        selected = null;
-        draw();
+        closePanel();
       }
     }
   }
@@ -1228,6 +1226,7 @@ wrap.addEventListener('touchend', e => {
     const my = e.changedTouches[0].clientY - r.top;
     const p = planetAt(mx, my);
     if (p) openPanel(p);
+    else closePanel();
   }
   mouseDown = false; mouseMoved = false; t1Dist = null;
 });
@@ -1284,24 +1283,27 @@ function openPanel(p) {
   draw();
 }
 
-document.getElementById('panelClose').addEventListener('click', () => {
+let mobileHighlightTimer = null;
+function closePanel() {
   document.getElementById('panel').classList.remove('open');
   const wasPlanet = selected;
   selected = null;
-  // On mobile, keep the planet highlighted for 8 seconds after closing
+  if (mobileHighlightTimer) { clearTimeout(mobileHighlightTimer); mobileHighlightTimer = null; }
+  // On mobile, keep the planet highlighted for 10 seconds after closing
   if (window.innerWidth <= 768 && wasPlanet) {
     highlight = new Set([wasPlanet.name]);
     draw();
-    setTimeout(() => {
-      if (highlight && highlight.has(wasPlanet.name)) {
-        highlight = null;
-        draw();
-      }
-    }, 8000);
+    mobileHighlightTimer = setTimeout(() => {
+      highlight = null;
+      mobileHighlightTimer = null;
+      draw();
+    }, 10000);
   } else {
+    highlight = null;
     draw();
   }
-});
+}
+document.getElementById('panelClose').addEventListener('click', closePanel);
 
 // --- Colour mode buttons ---
 document.querySelectorAll('.filter-btn').forEach(btn => {
