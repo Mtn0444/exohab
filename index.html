@@ -1047,7 +1047,7 @@ function draw() {
   ctx.beginPath();
   ctx.arc(c.x, c.y, 5, 0, Math.PI * 2);
   const earthCol = (colorMode === 'hab' || colorMode === 'dist') ? '#a7f3d0'
-    : colorMode === 'temp' ? '#48bcc2'   // ~15°C blue-teal
+    : colorMode === 'temp' ? '#42b4c8'   // ~15°C blue-teal
     : '#4a9eff';                          // 1× Earth size
   ctx.fillStyle = earthCol;
   ctx.fill();
