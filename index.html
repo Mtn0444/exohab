@@ -1790,8 +1790,16 @@ function updateMobileLegend() {
 }
 
 function openSS() {
-  document.getElementById('ssInset').classList.add('expanded');
-  setTimeout(() => drawSS(), 50);
+  const inset = document.getElementById('ssInset');
+  inset.classList.add('expanded');
+  ssPan = { x: 0, y: 0 };
+  ssZoom = 1;
+  requestAnimationFrame(() => {
+    const rect = ssCanvas.getBoundingClientRect();
+    ssCanvas.width = Math.round(rect.width);
+    ssCanvas.height = Math.round(rect.height);
+    drawSS();
+  });
 }
 
 </script>
