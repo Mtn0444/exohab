@@ -768,9 +768,10 @@ canvas { position: absolute; inset: 0; display: block; }
     right: 0.6rem;
     bottom: 0.6rem;
     max-height: 70vh;
-    overflow-y: auto;
+    overflow-y: scroll;
     z-index: 360;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
   /* Inside drawer, data and photo flow naturally */
   .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail {
@@ -927,7 +928,7 @@ canvas { position: absolute; inset: 0; display: block; }
       <div class="ss-detail-name" id="ssDetailName"></div>
       <div class="ss-detail-text" id="ssDetailText"></div>
       <div class="ss-detail-travel" id="ssDetailTravel" style="display:none"></div>
-      <span class="ss-close" id="ssClose">✕</span>
+      <span class="ss-close" id="ssClose" ontouchstart="event.stopPropagation();event.preventDefault();closeSsDetail()" onclick="event.stopPropagation();closeSsDetail()">✕</span>
     </div>
     <div class="ss-photo" id="ssPhoto">
       <img id="ssPhotoImg" src="" alt="">
@@ -1848,12 +1849,17 @@ ssCanvas.addEventListener('touchend', e => {
   ssMouseDown = false; ssMouseMoved = false; ssTouchDist = null;
 });
 
-document.getElementById('ssClose').addEventListener('click', e => {
-  e.stopPropagation();
+function closeSsDetail() {
   ssSelected = null;
   document.getElementById('ssDetail').classList.remove('open');
   document.getElementById('ssPhoto').classList.remove('open');
   drawSS();
+}
+window.closeSsDetail = closeSsDetail;
+
+// Allow native scrolling on the SS drawer (stop events from reaching canvas handlers)
+['touchstart', 'touchmove', 'touchend'].forEach(ev => {
+  document.getElementById('ssDrawer').addEventListener(ev, e => { e.stopPropagation(); }, {passive: true});
 });
 
 // --- Init ---
