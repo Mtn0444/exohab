@@ -769,6 +769,20 @@ canvas { position: absolute; inset: 0; display: block; }
     max-height: 35vh;
     overflow-y: auto;
     z-index: 360;
+    padding-right: 2.5rem !important;
+  }
+  /* Bigger X close in the data box */
+  .ss-inset.expanded .ss-detail.open .ss-close {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.5rem;
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 4px;
+    color: rgba(255,255,255,0.9);
   }
   .ss-inset.expanded .ss-photo.open {
     position: fixed !important;
@@ -781,8 +795,9 @@ canvas { position: absolute; inset: 0; display: block; }
   }
   .ss-inset.expanded .ss-photo.open img {
     width: 100%;
-    max-height: 25vh;
-    object-fit: contain;
+    height: 25vh;
+    object-fit: cover;
+    border-radius: 6px;
   }
   .ss-inset.expanded:has(.ss-detail.open) .ss-expand-hint { display: none; }
 
@@ -893,7 +908,7 @@ canvas { position: absolute; inset: 0; display: block; }
       <div class="ss-detail-name" id="ssDetailName"></div>
       <div class="ss-detail-text" id="ssDetailText"></div>
       <div class="ss-detail-travel" id="ssDetailTravel" style="display:none"></div>
-      <span class="ss-close" id="ssClose">✕ close</span>
+      <span class="ss-close" id="ssClose">✕</span>
     </div>
     <div class="ss-photo" id="ssPhoto">
       <img id="ssPhotoImg" src="" alt="">
