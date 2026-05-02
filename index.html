@@ -217,6 +217,18 @@ canvas { position: absolute; inset: 0; display: block; }
   right: 4rem;
   z-index: 10;
 }
+.ss-context-note { display: none; }
+.ss-inset.expanded .ss-context-note {
+  display: inline;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: #8db4e0;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+  margin-left: 0.5rem;
+}
 .ss-inset.expanded .ss-note {
   display: none;
 }
@@ -940,7 +952,7 @@ canvas { position: absolute; inset: 0; display: block; }
 
   <div class="ss-inset" id="ssInset">
     <button class="ss-collapse-btn" id="ssCollapse" ontouchstart="event.stopPropagation();event.preventDefault();closeSolarSystem()" onclick="event.stopPropagation();closeSolarSystem()">✕</button>
-    <div class="ss-title">☀ Our Solar System — Potentially Habitable Worlds</div>
+    <div class="ss-title">☀ Our Solar System — Potentially Habitable Worlds<span class="ss-context-note">Venus, Jupiter & Saturn are not habitable, included here for context only</span></div>
     <div class="ss-canvas-wrap">
       <canvas id="ssCanvas"></canvas>
     </div>
