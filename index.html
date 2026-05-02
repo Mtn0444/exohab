@@ -773,11 +773,12 @@ canvas { position: absolute; inset: 0; display: block; }
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
   }
-  /* Inside drawer, data and photo flow naturally */
+  /* Data box sticks to top of drawer while scrolling reveals the photo */
   .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail {
-    position: static !important;
+    position: sticky !important;
+    top: 0;
     display: block !important;
-    background: rgba(3,8,16,0.96);
+    background: rgba(3,8,16,0.98);
     border: 1px solid rgba(74,158,255,0.4);
     border-radius: 6px;
     padding: 0.75rem 0.85rem;
@@ -786,6 +787,7 @@ canvas { position: absolute; inset: 0; display: block; }
     max-width: none;
     min-width: 0;
     width: auto;
+    z-index: 2;
   }
   .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail .ss-close {
     position: absolute;
