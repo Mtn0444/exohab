@@ -734,6 +734,36 @@ canvas { position: absolute; inset: 0; display: block; }
   .ss-inset.expanded .ss-close { display: inline-block !important; }
   .ss-inset.expanded .ss-photo-credit { display: block !important; }
 
+  /* Make SS expanded view scroll, stack data + photo below canvas */
+  .ss-inset.expanded {
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .ss-inset.expanded .ss-canvas-wrap {
+    flex: none !important;
+    width: 100% !important;
+    height: 50vh !important;
+    flex-shrink: 0;
+  }
+  .ss-inset.expanded .ss-detail {
+    position: static !important;
+    margin: 0.5rem 0.6rem !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+  .ss-inset.expanded .ss-photo {
+    position: static !important;
+    margin: 0 0.6rem 1rem !important;
+    width: auto !important;
+  }
+  .ss-inset.expanded .ss-photo img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
   /* Light year popup full width */
   .ly-popup {
     position: fixed !important;
