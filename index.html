@@ -678,10 +678,7 @@ canvas { position: absolute; inset: 0; display: block; }
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
-  #mobileLegendArrow {
-    font-size: 0.7rem;
-    color: var(--accent);
-  }
+
   #mobileLegendPopup {
     display: none;
     position: fixed;
@@ -757,7 +754,6 @@ canvas { position: absolute; inset: 0; display: block; }
 <!-- MOBILE LEGEND BAR -->
 <div id="mobileLegendBar" onclick="toggleMobileLegend()">
   <span id="mobileLegendLabel">Colour = Distance</span>
-  <span id="mobileLegendArrow">▲ Key</span>
 </div>
 <div id="mobileLegendPopup" id="mobileLegendPopup">
   <div id="mobileLegendContent"></div>
@@ -1698,15 +1694,25 @@ function closeMobileDrawer() {
 }
 
 function setMobileMode(mode, el) {
+  const popup = document.getElementById('mobileLegendPopup');
+  const isSameMode = colorMode === mode;
+  const isOpen = popup.classList.contains('open');
+
   colorMode = mode;
   document.querySelectorAll('.mob-mode-btn').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
-  // sync desktop buttons too
   document.querySelectorAll('.filter-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.color === mode);
   });
   renderLegend();
   updateMobileLegend();
+
+  // Toggle: if same mode tapped again and popup open, close it; otherwise open it
+  if (isSameMode && isOpen) {
+    popup.classList.remove('open');
+  } else {
+    popup.classList.add('open');
+  }
   draw();
 }
 
@@ -1733,11 +1739,7 @@ function selectMobileResult(name) {
 
 function toggleMobileLegend() {
   const popup = document.getElementById('mobileLegendPopup');
-  const arrow = document.getElementById('mobileLegendArrow');
-  const isOpen = popup.classList.contains('open');
   popup.classList.toggle('open');
-  arrow.textContent = isOpen ? '▲ Key' : '▼ Key';
-  // Sync legend content each time
   updateMobileLegend();
 }
 
