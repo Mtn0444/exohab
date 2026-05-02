@@ -459,7 +459,7 @@ canvas { position: absolute; inset: 0; display: block; }
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 200;
-    height: 44px;
+    height: 56px;
     background: rgba(3,8,16,0.97);
     border-bottom: 1px solid rgba(74,158,255,0.2);
     align-items: center;
@@ -473,6 +473,21 @@ canvas { position: absolute; inset: 0; display: block; }
     font-weight: 800;
     color: #fff;
     letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .mobile-subtitle {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100vw - 80px);
+  }
+  @media (max-width: 380px) {
+    .mobile-subtitle { display: none; }
+    #mobileBar { height: 44px; }
+    #canvas { margin-top: 44px !important; height: calc(100vh - 44px) !important; }
   }
 
   #mobileTitle span { color: var(--accent); }
@@ -493,8 +508,8 @@ canvas { position: absolute; inset: 0; display: block; }
 
   /* Offset canvas for top bar */
   #canvas {
-    margin-top: 44px;
-    height: calc(100vh - 44px) !important;
+    margin-top: 56px;
+    height: calc(100vh - 56px) !important;
   }
 
   /* Mobile drawer menu */
@@ -694,6 +709,15 @@ canvas { position: absolute; inset: 0; display: block; }
 
   /* Hide SS inset on mobile — accessible via drawer */
   .ss-inset { display: none !important; }
+  .ss-inset.expanded {
+    display: flex !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+    z-index: 250 !important;
+  }
 
   /* Ensure SS detail and credit visible in expanded SS on mobile */
   .ss-inset.expanded .ss-detail { display: block !important; }
@@ -702,10 +726,15 @@ canvas { position: absolute; inset: 0; display: block; }
 
   /* Light year popup full width */
   .ly-popup {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
     width: 92vw;
     max-height: 80vh;
     overflow-y: auto;
     padding: 1.25rem;
+    z-index: 300 !important;
   }
 
   /* Search dropdown full width */
@@ -723,7 +752,10 @@ canvas { position: absolute; inset: 0; display: block; }
 <body>
 <!-- MOBILE TOP BAR -->
 <div id="mobileBar" style="display:none">
-  <div id="mobileTitle">Exo<span>Hab</span></div>
+  <div style="display:flex;flex-direction:column;justify-content:center;min-width:0;flex:1;overflow:hidden;margin-right:0.5rem">
+    <div id="mobileTitle">Exo<span>Hab</span></div>
+    <div class="mobile-subtitle">Potentially habitable worlds from NASA's exoplanet catalogue + our solar system</div>
+  </div>
   <button id="mobileMenuBtn" onclick="openMobileDrawer()">☰</button>
 </div>
 
