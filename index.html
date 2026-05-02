@@ -721,12 +721,28 @@ canvas { position: absolute; inset: 0; display: block; }
   .ss-inset { display: none !important; }
   .ss-inset.expanded {
     display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
     position: fixed !important;
     inset: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
     border-radius: 0 !important;
-    z-index: 250 !important;
+    z-index: 350 !important;
+    background: #030810 !important;
+    overflow-y: auto !important;
+  }
+  .ss-inset.expanded .ss-canvas-wrap {
+    flex: none !important;
+    margin: auto 0;
+  }
+
+  .ss-inset.expanded .ss-title {
+    font-size: 0.6rem !important;
+    top: 0.5rem !important;
+    left: 0.6rem !important;
+    right: 3.2rem !important;
+    line-height: 1.25 !important;
   }
 
   /* Ensure SS detail and credit visible in expanded SS on mobile (only when open) */
@@ -734,35 +750,41 @@ canvas { position: absolute; inset: 0; display: block; }
   .ss-inset.expanded .ss-close { display: inline-block !important; }
   .ss-inset.expanded .ss-photo-credit { display: block !important; }
 
-  /* Make SS expanded view scroll, stack data + photo below canvas */
-  .ss-inset.expanded {
-    overflow-y: auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
+  /* Canvas takes a fixed center area on mobile */
   .ss-inset.expanded .ss-canvas-wrap {
     flex: none !important;
     width: 100% !important;
-    height: 50vh !important;
-    flex-shrink: 0;
+    height: 60vh !important;
   }
-  .ss-inset.expanded .ss-detail {
-    position: static !important;
-    margin: 0.5rem 0.6rem !important;
+  /* Data and photo slide up from bottom as overlays on top of canvas */
+  .ss-inset.expanded .ss-detail.open {
+    position: fixed !important;
+    left: 0.6rem !important;
+    right: 0.6rem !important;
+    bottom: calc(28vh + 0.5rem) !important;
+    top: auto !important;
     max-width: none !important;
     min-width: 0 !important;
     width: auto !important;
+    max-height: 35vh;
+    overflow-y: auto;
+    z-index: 360;
   }
-  .ss-inset.expanded .ss-photo {
-    position: static !important;
-    margin: 0 0.6rem 1rem !important;
+  .ss-inset.expanded .ss-photo.open {
+    position: fixed !important;
+    left: 0.6rem !important;
+    right: 0.6rem !important;
+    bottom: 0.6rem !important;
     width: auto !important;
+    max-height: 27vh;
+    z-index: 360;
   }
-  .ss-inset.expanded .ss-photo img {
+  .ss-inset.expanded .ss-photo.open img {
     width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
+    max-height: 25vh;
+    object-fit: contain;
   }
+  .ss-inset.expanded:has(.ss-detail.open) .ss-expand-hint { display: none; }
 
   /* Light year popup full width */
   .ly-popup {
@@ -867,7 +889,7 @@ canvas { position: absolute; inset: 0; display: block; }
     </div>
     <div class="ss-note">Click anywhere to expand</div>
     <div class="ss-expand-hint">Click a body to learn more</div>
-    <div class="ss-detail" id="ssDetail" style="display:none">
+    <div class="ss-detail" id="ssDetail">
       <div class="ss-detail-name" id="ssDetailName"></div>
       <div class="ss-detail-text" id="ssDetailText"></div>
       <div class="ss-detail-travel" id="ssDetailTravel" style="display:none"></div>
@@ -1425,9 +1447,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function expandSS(e) {
     if (ssInset.classList.contains('expanded')) return;
     if (e.target === ssCollapse || ssCollapse.contains(e.target)) return;
+    document.getElementById('panel').classList.remove('open');
+    selected = null;
     ssInset.classList.add('expanded');
     ssSelected = null;
-    document.getElementById('ssDetail').style.display = 'none';
+    document.getElementById('ssDetail').classList.remove('open');
     document.getElementById('ssPhoto').classList.remove('open');
     ssPan = { x: 0, y: 0 };
     ssZoom = 1;
@@ -1444,7 +1468,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.stopPropagation();
     ssInset.classList.remove('expanded');
     ssSelected = null;
-    document.getElementById('ssDetail').style.display = 'none';
+    document.getElementById('ssDetail').classList.remove('open');
     document.getElementById('ssPhoto').classList.remove('open');
     setTimeout(() => drawSS(), 50);
   }
@@ -1455,9 +1479,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('ssBtn').addEventListener('click', () => {
     if (!ssInset.classList.contains('expanded')) {
+      // Close any open planet panel before opening SS
+      document.getElementById('panel').classList.remove('open');
+      selected = null;
       ssInset.classList.add('expanded');
       ssSelected = null;
-      document.getElementById('ssDetail').style.display = 'none';
+      document.getElementById('ssDetail').classList.remove('open');
       document.getElementById('ssPhoto').classList.remove('open');
       ssPan = { x: 0, y: 0 };
       ssZoom = 1;
@@ -1687,7 +1714,7 @@ ssCanvas.addEventListener('mouseup', e => {
       } else if (travelEl) {
         travelEl.style.display = 'none';
       }
-      document.getElementById('ssDetail').style.display = 'block';
+      document.getElementById('ssDetail').classList.add('open');
       // Show photo on right side
       const photoEl = document.getElementById('ssPhoto');
       const photoImg = document.getElementById('ssPhotoImg');
@@ -1701,7 +1728,7 @@ ssCanvas.addEventListener('mouseup', e => {
     } else {
       // Clicked empty space — dismiss panel and deselect
       ssSelected = null;
-      document.getElementById('ssDetail').style.display = 'none';
+      document.getElementById('ssDetail').classList.remove('open');
       document.getElementById('ssPhoto').classList.remove('open');
     }
     drawSS();
@@ -1766,7 +1793,7 @@ ssCanvas.addEventListener('touchend', e => {
       } else if (travelEl) {
         travelEl.style.display = 'none';
       }
-      document.getElementById('ssDetail').style.display = 'block';
+      document.getElementById('ssDetail').classList.add('open');
       const photoEl = document.getElementById('ssPhoto');
       const photoImg = document.getElementById('ssPhotoImg');
       if (b.photo) {
@@ -1778,7 +1805,7 @@ ssCanvas.addEventListener('touchend', e => {
       }
     } else {
       ssSelected = null;
-      document.getElementById('ssDetail').style.display = 'none';
+      document.getElementById('ssDetail').classList.remove('open');
       document.getElementById('ssPhoto').classList.remove('open');
     }
     drawSS();
@@ -1789,7 +1816,7 @@ ssCanvas.addEventListener('touchend', e => {
 document.getElementById('ssClose').addEventListener('click', e => {
   e.stopPropagation();
   ssSelected = null;
-  document.getElementById('ssDetail').style.display = 'none';
+  document.getElementById('ssDetail').classList.remove('open');
   document.getElementById('ssPhoto').classList.remove('open');
   drawSS();
 });
@@ -1876,6 +1903,12 @@ function updateMobileLegend() {
 }
 
 function openSS() {
+  // Close any open planet panel and reset SS state
+  document.getElementById('panel').classList.remove('open');
+  selected = null;
+  ssSelected = null;
+  document.getElementById('ssDetail').classList.remove('open');
+  document.getElementById('ssPhoto').classList.remove('open');
   const inset = document.getElementById('ssInset');
   inset.classList.add('expanded');
   ssPan = { x: 0, y: 0 };
