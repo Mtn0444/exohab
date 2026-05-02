@@ -149,7 +149,7 @@ canvas { position: absolute; inset: 0; display: block; }
   transition: all 0.15s;
 }
 .panel-close:hover { color: #fff; border-color: #fff; }
-.panel-name { font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 700; color: #fff; padding-right: 2.5rem; line-height: 1.3; }
+.panel-name { font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 700; color: #fff; padding-right: 4.5rem; line-height: 1.3; }
 .panel-tags { display: flex; gap: 0.35rem; margin-top: 0.55rem; flex-wrap: wrap; }
 .tag { font-family: 'Nunito', sans-serif; font-size: 0.62rem; padding: 0.18rem 0.48rem; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
 .tag-blue { background: rgba(30,80,160,0.3); color: #93c5fd; }
@@ -214,6 +214,7 @@ canvas { position: absolute; inset: 0; display: block; }
   position: absolute;
   top: 0.75rem;
   left: 1.25rem;
+  right: 4rem;
   z-index: 10;
 }
 .ss-inset.expanded .ss-note {
@@ -257,6 +258,7 @@ canvas { position: absolute; inset: 0; display: block; }
   position: absolute;
   top: 0.75rem;
   right: 1rem;
+  z-index: 20;
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 4px;
@@ -267,7 +269,6 @@ canvas { position: absolute; inset: 0; display: block; }
   padding: 0.4rem 0.8rem;
   cursor: pointer;
   transition: all 0.15s;
-  z-index: 10;
 }
 .ss-collapse-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
 .ss-inset.expanded .ss-collapse-btn { display: block; }
@@ -851,7 +852,7 @@ canvas { position: absolute; inset: 0; display: block; }
 </div>
 
 <div class="panel" id="panel">
-  <button class="panel-close" id="panelClose">✕ close</button>
+  <button class="panel-close" id="panelClose" ontouchstart="event.preventDefault();closePanelMobile()">✕ close</button>
   <div class="panel-name" id="pName"></div>
   <div class="panel-tags" id="pTags"></div>
   <div class="hab-bar-wrap">
@@ -1051,11 +1052,13 @@ function draw() {
 
 // --- Hit test ---
 function planetAt(mx, my) {
-  let best = null, bestD = 16;
+  const isMobile = window.innerWidth <= 768;
+  const extra = isMobile ? 18 : 7;
+  let best = null, bestD = isMobile ? 30 : 16;
   for (const p of PLANETS) {
     const pos = toScreen(p.cx, p.cy);
     const d = Math.hypot(pos.x - mx, pos.y - my);
-    if (d < dotRadius(p) + 7 && d < bestD) {
+    if (d < dotRadius(p) + extra && d < bestD) {
       bestD = d;
       best = p;
     }
@@ -1253,11 +1256,13 @@ function openPanel(p) {
   draw();
 }
 
-document.getElementById('panelClose').addEventListener('click', () => {
+function closePanelMobile() {
   document.getElementById('panel').classList.remove('open');
   selected = null;
   draw();
-});
+}
+window.closePanelMobile = closePanelMobile;
+document.getElementById('panelClose').addEventListener('click', closePanelMobile);
 
 // --- Colour mode buttons ---
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -1714,7 +1719,42 @@ ssCanvas.addEventListener('touchmove', e => {
   }
 }, { passive: false });
 
-ssCanvas.addEventListener('touchend', () => { ssMouseDown = false; ssMouseMoved = false; ssTouchDist = null; });
+ssCanvas.addEventListener('touchend', e => {
+  if (!ssMouseMoved && e.changedTouches.length === 1) {
+    const rect = ssCanvas.getBoundingClientRect();
+    const mx = e.changedTouches[0].clientX - rect.left;
+    const my = e.changedTouches[0].clientY - rect.top;
+    const b = ssBodyAt(mx, my);
+    if (b) {
+      ssSelected = b;
+      document.getElementById('ssDetailName').textContent = b.name;
+      document.getElementById('ssDetailText').textContent = b.desc;
+      const travelEl = document.getElementById('ssDetailTravel');
+      if (travelEl && b.travel && b.name !== 'Earth') {
+        travelEl.textContent = '\u{1F680} ' + b.travel;
+        travelEl.style.display = 'block';
+      } else if (travelEl) {
+        travelEl.style.display = 'none';
+      }
+      document.getElementById('ssDetail').style.display = 'block';
+      const photoEl = document.getElementById('ssPhoto');
+      const photoImg = document.getElementById('ssPhotoImg');
+      if (b.photo) {
+        photoImg.src = b.photo;
+        photoImg.alt = b.name;
+        photoEl.classList.add('open');
+      } else {
+        photoEl.classList.remove('open');
+      }
+    } else {
+      ssSelected = null;
+      document.getElementById('ssDetail').style.display = 'none';
+      document.getElementById('ssPhoto').classList.remove('open');
+    }
+    drawSS();
+  }
+  ssMouseDown = false; ssMouseMoved = false; ssTouchDist = null;
+});
 
 document.getElementById('ssClose').addEventListener('click', e => {
   e.stopPropagation();
