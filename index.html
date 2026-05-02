@@ -478,17 +478,10 @@ canvas { position: absolute; inset: 0; display: block; }
   }
   .mobile-subtitle {
     font-family: 'Nunito', sans-serif;
-    font-size: 0.6rem;
-    color: rgba(255,255,255,0.5);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: calc(100vw - 80px);
-  }
-  @media (max-width: 380px) {
-    .mobile-subtitle { display: none; }
-    #mobileBar { height: 44px; }
-    #canvas { margin-top: 44px !important; height: calc(100vh - 44px) !important; }
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.25;
+    margin-top: 0.15rem;
   }
 
   #mobileTitle span { color: var(--accent); }
@@ -878,7 +871,7 @@ canvas { position: absolute; inset: 0; display: block; }
 <body>
 <!-- MOBILE TOP BAR -->
 <div id="mobileBar" style="display:none">
-  <div style="display:flex;flex-direction:column;justify-content:center;min-width:0;flex:1;overflow:hidden;margin-right:0.5rem">
+  <div style="display:flex;flex-direction:column;justify-content:center;min-width:0;flex:1;margin-right:0.5rem">
     <div id="mobileTitle">Exo<span>Hab</span></div>
     <div class="mobile-subtitle">Potentially habitable worlds from NASA's exoplanet catalogue + our solar system</div>
   </div>
@@ -1306,6 +1299,11 @@ wrap.addEventListener('touchmove', e => {
 
 wrap.addEventListener('touchend', e => {
   if (!mouseMoved && e.changedTouches.length === 1) {
+    // Ignore taps right after closing the Solar System view
+    if (window._ssJustClosed && Date.now() - window._ssJustClosed < 600) {
+      mouseDown = false; mouseMoved = false; t1Dist = null;
+      return;
+    }
     // Ignore taps on UI elements overlaid on the canvas
     const target = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
     if (target && (target.closest('#mobileModebar') || target.closest('#mobileBar') || target.closest('#mobileDrawer') || target.closest('.panel'))) {
@@ -1535,6 +1533,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ssSelected = null;
     document.getElementById('ssDetail').classList.remove('open');
     document.getElementById('ssPhoto').classList.remove('open');
+    window._ssJustClosed = Date.now();
     setTimeout(() => drawSS(), 50);
   }
 
