@@ -243,7 +243,7 @@ canvas { position: absolute; inset: 0; display: block; }
   min-width: 200px;
   display: none;
 }
-.ss-inset.expanded .ss-detail { display: block; }
+.ss-inset.expanded .ss-detail { display: none; }
 .ss-inset.expanded .ss-detail.open { display: block; }
 .ss-inset.expanded .ss-canvas-wrap {
   flex: 1;
@@ -635,11 +635,12 @@ canvas { position: absolute; inset: 0; display: block; }
     border-left: none;
     border-top: 1px solid var(--border);
     border-radius: 14px 14px 0 0;
-    transform: translateY(100%);
+    transform: translateY(calc(100% + 4rem));
     transition: transform 0.28s ease;
-    padding: 0.5rem 0.85rem 0.85rem;
+    padding: 0.5rem 0.85rem 4rem;
     overflow-y: auto;
     font-size: 0.85rem;
+    z-index: 160;
   }
 
   .panel.open { transform: translateY(0); }
@@ -654,7 +655,15 @@ canvas { position: absolute; inset: 0; display: block; }
     margin: 0.4rem auto 0.75rem;
   }
 
-  .panel-close { top: 0.5rem; right: 0.75rem; }
+  .panel-close {
+    top: 0.5rem;
+    right: 0.75rem;
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.95);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.55rem;
+  }
   /* Smaller panel text on mobile */
   .panel-name { font-size: 1rem !important; }
   .panel-desc { font-size: 0.82rem !important; line-height: 1.55 !important; }
@@ -719,8 +728,8 @@ canvas { position: absolute; inset: 0; display: block; }
     z-index: 250 !important;
   }
 
-  /* Ensure SS detail and credit visible in expanded SS on mobile */
-  .ss-inset.expanded .ss-detail { display: block !important; }
+  /* Ensure SS detail and credit visible in expanded SS on mobile (only when open) */
+  .ss-inset.expanded .ss-detail.open { display: block !important; }
   .ss-inset.expanded .ss-close { display: inline-block !important; }
   .ss-inset.expanded .ss-photo-credit { display: block !important; }
 
@@ -820,7 +829,7 @@ canvas { position: absolute; inset: 0; display: block; }
   <div class="hint">Scroll to zoom · Drag to pan<br>Click any dot to explore</div>
 
   <div class="ss-inset" id="ssInset">
-    <button class="ss-collapse-btn" id="ssCollapse">✕ Close</button>
+    <button class="ss-collapse-btn" id="ssCollapse" ontouchstart="event.stopPropagation();event.preventDefault();closeSolarSystem()" onclick="event.stopPropagation();closeSolarSystem()">✕</button>
     <div class="ss-title">☀ Our Solar System — Potentially Habitable Worlds</div>
     <div class="ss-canvas-wrap">
       <canvas id="ssCanvas"></canvas>
@@ -1382,6 +1391,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (ssInset.classList.contains('expanded')) return;
     if (e.target === ssCollapse || ssCollapse.contains(e.target)) return;
     ssInset.classList.add('expanded');
+    ssSelected = null;
+    document.getElementById('ssDetail').style.display = 'none';
+    document.getElementById('ssPhoto').classList.remove('open');
     ssPan = { x: 0, y: 0 };
     ssZoom = 1;
     // Let browser lay out first, then read actual canvas dimensions
@@ -1404,10 +1416,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ssInset.addEventListener('click', expandSS);
   ssCollapse.addEventListener('click', collapseSS);
+  window.closeSolarSystem = function(e) { collapseSS(e || {stopPropagation: () => {}}); };
 
   document.getElementById('ssBtn').addEventListener('click', () => {
     if (!ssInset.classList.contains('expanded')) {
       ssInset.classList.add('expanded');
+      ssSelected = null;
+      document.getElementById('ssDetail').style.display = 'none';
+      document.getElementById('ssPhoto').classList.remove('open');
       ssPan = { x: 0, y: 0 };
       ssZoom = 1;
       requestAnimationFrame(() => {
