@@ -757,20 +757,36 @@ canvas { position: absolute; inset: 0; display: block; }
     height: 60vh !important;
   }
   /* Data and photo slide up from bottom as overlays on top of canvas */
-  .ss-inset.expanded .ss-detail.open {
-    position: fixed !important;
-    left: 0.6rem !important;
-    right: 0.6rem !important;
-    bottom: 32vh !important;
-    top: auto !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    width: auto !important;
-    z-index: 360;
-    padding-right: 2.5rem !important;
+  /* Single scrollable drawer holds data + photo together */
+  .ss-drawer {
+    display: none;
   }
-  /* Bigger X close in the data box */
-  .ss-inset.expanded .ss-detail.open .ss-close {
+  .ss-inset.expanded .ss-drawer:has(.ss-detail.open) {
+    display: block;
+    position: fixed;
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    max-height: 70vh;
+    overflow-y: auto;
+    z-index: 360;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Inside drawer, data and photo flow naturally */
+  .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail {
+    position: static !important;
+    display: block !important;
+    background: rgba(3,8,16,0.96);
+    border: 1px solid rgba(74,158,255,0.4);
+    border-radius: 6px;
+    padding: 0.75rem 0.85rem;
+    padding-right: 2.5rem;
+    margin-bottom: 0.5rem;
+    max-width: none;
+    min-width: 0;
+    width: auto;
+  }
+  .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail .ss-close {
     position: absolute;
     top: 0.4rem;
     right: 0.5rem;
@@ -781,27 +797,25 @@ canvas { position: absolute; inset: 0; display: block; }
     border: 1px solid rgba(255,255,255,0.25);
     border-radius: 4px;
     color: rgba(255,255,255,0.9);
+    display: inline-block !important;
   }
-  .ss-inset.expanded .ss-photo.open {
-    position: fixed !important;
-    left: 0.6rem !important;
-    right: 0.6rem !important;
-    bottom: 1rem !important;
+  .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-photo {
+    position: static !important;
+    display: flex !important;
     width: auto !important;
-    height: 28vh;
-    max-height: 28vh;
-    z-index: 360;
-    overflow: hidden;
+    flex-direction: column;
+    gap: 0.3rem;
   }
-  .ss-inset.expanded .ss-photo.open img {
+  .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-photo img {
     width: 100%;
-    height: 25vh;
-    object-fit: cover;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
     border-radius: 6px;
     display: block;
   }
-  .ss-inset.expanded .ss-photo.open .ss-photo-credit {
-    margin-top: 0.2rem;
+  .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-photo-credit {
+    display: block !important;
   }
   .ss-inset.expanded:has(.ss-detail.open) .ss-expand-hint { display: none; }
 
@@ -908,6 +922,7 @@ canvas { position: absolute; inset: 0; display: block; }
     </div>
     <div class="ss-note">Click anywhere to expand</div>
     <div class="ss-expand-hint">Click a body to learn more</div>
+    <div class="ss-drawer" id="ssDrawer">
     <div class="ss-detail" id="ssDetail">
       <div class="ss-detail-name" id="ssDetailName"></div>
       <div class="ss-detail-text" id="ssDetailText"></div>
@@ -917,6 +932,7 @@ canvas { position: absolute; inset: 0; display: block; }
     <div class="ss-photo" id="ssPhoto">
       <img id="ssPhotoImg" src="" alt="">
       <div class="ss-photo-credit">Image: NASA / Wikimedia Commons</div>
+    </div>
     </div>
 
   </div>
