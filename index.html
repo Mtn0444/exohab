@@ -781,6 +781,8 @@ canvas { position: absolute; inset: 0; display: block; }
   }
   .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail {
     position: relative !important;
+    left: 0 !important;
+    bottom: auto !important;
     display: block !important;
     background: transparent;
     border: none;
@@ -807,19 +809,19 @@ canvas { position: absolute; inset: 0; display: block; }
   }
   .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail .ss-close {
     margin: 0;
-    padding: 0.2rem 0.55rem;
-    font-size: 0.9rem;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.4);
+    padding: 0.15rem 0.45rem;
+    font-size: 0.75rem;
+    background: rgba(74,158,255,0.15);
+    border: 1px solid rgba(74,158,255,0.55);
     border-radius: 4px;
-    color: #fff;
+    color: #4a9eff;
     display: inline-block !important;
     line-height: 1;
     flex-shrink: 0;
   }
   .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail-text,
   .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail-travel {
-    padding: 0 0.85rem;
+    padding: 0 1.2rem;
   }
   .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail-text { padding-top: 0.75rem; }
   .ss-inset.expanded .ss-drawer:has(.ss-detail.open) .ss-detail-travel { padding-bottom: 0.75rem; }
