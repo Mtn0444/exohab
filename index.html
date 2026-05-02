@@ -656,6 +656,46 @@ canvas { position: absolute; inset: 0; display: block; }
   /* Hide hint */
   .hint { display: none; }
 
+  /* Mobile legend bottom bar */
+  #mobileLegendBar {
+    display: flex !important;
+    position: fixed;
+    bottom: 60px;
+    left: 0; right: 0;
+    z-index: 140;
+    background: rgba(3,8,16,0.92);
+    border-top: 1px solid rgba(74,158,255,0.2);
+    padding: 0.45rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  #mobileLegendLabel {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  #mobileLegendArrow {
+    font-size: 0.7rem;
+    color: var(--accent);
+  }
+  #mobileLegendPopup {
+    display: none;
+    position: fixed;
+    bottom: 110px;
+    left: 0.75rem;
+    right: 0.75rem;
+    z-index: 145;
+    background: rgba(3,8,16,0.97);
+    border: 1px solid rgba(74,158,255,0.3);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+  }
+  #mobileLegendPopup.open { display: block; }
+
   /* Hide SS inset on mobile — accessible via drawer */
   .ss-inset { display: none !important; }
 
@@ -680,7 +720,7 @@ canvas { position: absolute; inset: 0; display: block; }
 }
 
 @media (min-width: 769px) {
-  #mobileBar, #mobileDrawer, #mobileOverlay, #mobileModebar { display: none !important; }
+  #mobileBar, #mobileDrawer, #mobileOverlay, #mobileModebar, #mobileLegendBar, #mobileLegendPopup { display: none !important; }
 }
 </style>
 </head>
@@ -712,6 +752,15 @@ canvas { position: absolute; inset: 0; display: block; }
   <button class="mob-mode-btn" onclick="setMobileMode('temp',this)">Temp</button>
   <button class="mob-mode-btn" onclick="setMobileMode('size',this)">Size</button>
   <button class="mob-mode-btn active" onclick="setMobileMode('dist',this)">Distance</button>
+</div>
+
+<!-- MOBILE LEGEND BAR -->
+<div id="mobileLegendBar" onclick="toggleMobileLegend()">
+  <span id="mobileLegendLabel">Colour = Distance</span>
+  <span id="mobileLegendArrow">▲ Key</span>
+</div>
+<div id="mobileLegendPopup" id="mobileLegendPopup">
+  <div id="mobileLegendContent"></div>
 </div>
 
 <div class="header">
@@ -891,7 +940,7 @@ function draw() {
     ctx.strokeStyle = 'rgba(74,158,255,0.22)';
     ctx.lineWidth = 1;
     ctx.stroke();
-    if (sr > 25) {
+    if (sr > 25 && window.innerWidth > 768) {
       ctx.fillStyle = 'rgba(74,158,255,0.6)';
       ctx.font = '10px Nunito, sans-serif';
       ctx.textAlign = 'right';
@@ -1101,6 +1150,12 @@ wrap.addEventListener('touchmove', e => {
 
 wrap.addEventListener('touchend', e => {
   if (!mouseMoved && e.changedTouches.length === 1) {
+    // Ignore taps on UI elements overlaid on the canvas
+    const target = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    if (target && (target.closest('#mobileModebar') || target.closest('#mobileBar') || target.closest('#mobileDrawer') || target.closest('.panel'))) {
+      mouseDown = false; mouseMoved = false; t1Dist = null;
+      return;
+    }
     const r = wrap.getBoundingClientRect();
     const mx = e.changedTouches[0].clientX - r.left;
     const my = e.changedTouches[0].clientY - r.top;
@@ -1175,6 +1230,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.classList.add('active');
     colorMode = btn.dataset.color;
     renderLegend();
+setTimeout(updateMobileLegend, 100);
     draw();
   });
 });
@@ -1650,6 +1706,7 @@ function setMobileMode(mode, el) {
     b.classList.toggle('active', b.dataset.color === mode);
   });
   renderLegend();
+  updateMobileLegend();
   draw();
 }
 
@@ -1672,6 +1729,31 @@ function selectMobileResult(name) {
   panX += canvas.width/2 - c.x;
   panY += canvas.height/2 - c.y;
   draw();
+}
+
+function toggleMobileLegend() {
+  const popup = document.getElementById('mobileLegendPopup');
+  const arrow = document.getElementById('mobileLegendArrow');
+  const isOpen = popup.classList.contains('open');
+  popup.classList.toggle('open');
+  arrow.textContent = isOpen ? '▲ Key' : '▼ Key';
+  // Sync legend content each time
+  updateMobileLegend();
+}
+
+function updateMobileLegend() {
+  const labels = {
+    hab: 'Colour = Habitability',
+    temp: 'Colour = Temperature',
+    size: 'Colour = Planet Size',
+    dist: 'Colour = Distance'
+  };
+  const el = document.getElementById('mobileLegendLabel');
+  if (el) el.textContent = labels[colorMode] || 'Colour Key';
+  // Copy legend content into mobile popup
+  const leg = document.getElementById('legend');
+  const popup = document.getElementById('mobileLegendContent');
+  if (leg && popup) popup.innerHTML = leg.innerHTML;
 }
 
 function openSS() {
