@@ -514,6 +514,10 @@ canvas { position: absolute; inset: 0; display: block; }
     #mobileLegendPopup div[style*="0.78rem"] { font-size: 0.92rem !important; }
     #mobileLegendPopup .legend-title { font-size: 1rem !important; }
     #mobileLegendPopup .llabel { font-size: 1.05rem !important; }
+    /* SS expanded view: bigger title and hint on tablet */
+    .ss-inset.expanded .ss-title { font-size: 0.95rem !important; }
+    .ss-context-note { font-size: 0.9rem !important; }
+    .ss-inset.expanded .ss-expand-hint { font-size: 1.05rem !important; }
   }
 
   #mobileTitle span { color: var(--accent); }
@@ -874,6 +878,13 @@ canvas { position: absolute; inset: 0; display: block; }
     text-align: right;
   }
   .ss-inset.expanded:has(.ss-detail.open) .ss-expand-hint { display: none; }
+
+  /* Tablet-width overrides for SS expanded view */
+  @media (min-width: 600px) {
+    .ss-inset.expanded .ss-title { font-size: 1.05rem !important; }
+    .ss-context-note { font-size: 0.95rem !important; }
+    .ss-inset.expanded .ss-expand-hint { font-size: 1.1rem !important; }
+  }
 
   /* Light year popup full width */
   .ly-popup {
@@ -1724,7 +1735,7 @@ function drawSS() {
       ctx.beginPath();
       ctx.roundRect(lx - tw/2 - 5, ly - 9, tw + 10, 16, 3);
       ctx.fill();
-      ctx.fillStyle = dashed ? 'rgba(255,255,255,0.55)' : 'rgba(120,185,255,0.8)';
+      ctx.fillStyle = dashed ? 'rgba(255,255,255,0.95)' : 'rgba(120,185,255,0.8)';
       ctx.textAlign = 'center';
       ctx.fillText(label, lx, ly + 2);
       ctx.restore();
