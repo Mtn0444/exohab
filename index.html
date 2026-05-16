@@ -507,8 +507,13 @@ canvas { position: absolute; inset: 0; display: block; }
   @media (min-width: 600px) {
     #mobileTitle { font-size: 1.7rem; }
     .mobile-subtitle { font-size: 0.95rem; }
-    .mob-mode-btn { font-size: 1.05rem; padding: 0.5rem 1rem; }
+    .mob-mode-btn { font-size: 1.2rem !important; padding: 0.55rem 1.15rem !important; }
     #mobileMenuBtn { font-size: 1.6rem; padding: 0.3rem 0.7rem; }
+    /* Bump descriptor and projection note in legend popup on tablets */
+    #mobileLegendPopup div[style*="0.75rem"] { font-size: 0.9rem !important; }
+    #mobileLegendPopup div[style*="0.78rem"] { font-size: 0.92rem !important; }
+    #mobileLegendPopup .legend-title { font-size: 1rem !important; }
+    #mobileLegendPopup .llabel { font-size: 1.05rem !important; }
   }
 
   #mobileTitle span { color: var(--accent); }
